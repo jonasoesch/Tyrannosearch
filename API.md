@@ -9,8 +9,7 @@ This function get documents in Solr
 		tags: [],
 		groups: [],
 		rows: 10,
-		start: 0,
-		fields: []
+		page: 1
 	}
 
 ### displayResults()
