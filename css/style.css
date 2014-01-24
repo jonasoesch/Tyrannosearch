@@ -6,7 +6,28 @@
         Purpose of the stylesheet follows.
 */
 
-root { 
+body { 
+    padding-top: 10%;
+    height:66.66%;
+    width: 66.66%;
+    text-align: center;
     display: block;
+    
+}
+input{
+    width: 80%;
+}
+ul{
+    width:100%;
+}
+li {
+    
+}
+li{
+    width:20px;
+    height:20px;
 }
 
+article{
+    border: 0.5px solid #ff3300;
+}
