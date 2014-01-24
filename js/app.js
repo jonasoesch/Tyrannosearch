@@ -2,6 +2,7 @@ $(document).ready( function() {
 	
 });
 
+
 function querySolr(query) {
   if(query.text == null) {query.text = "*:*";}  
   if(query.roles == null) {query.role = [];}
@@ -11,3 +12,16 @@ function querySolr(query) {
   if(query.page == null) {query.page = 1;}
 
 }
+
+
+// Reloads the results for the currently selected search parameters
+function updateResults() {
+
+}
+
+// Adds results to the page
+function loadMoreResults() {
+
+}
+
+
