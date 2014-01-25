@@ -8,19 +8,48 @@
         <link rel="stylesheet" type="text/css" href="css/style.css" /> 
     </head>
     <body>
-        <img src="pictos/dino.png" />
-        <iframe src="http://player.vimeo.com/video/34750078?title=0&amp;byline=0&amp;portrait=0" width="400" height="225" frameborder="0" ></iframe>
+        <aside>
+      <h3>Tags</h3>
+      <ul id="taglist">
+        <li>#juso</li>
+        <li>#paella</li>
+        <li>#nachos</li>
+      
+      </ul>
+      <h3>groupID</h3>
+      <ul>
+        <li>iLoveDinos</li>
+        <li>The naives</li>
+       
+      </ul>
+    </aside>
+        <div id="main">
+        <img class="dino" src="pictos/dino.png" />
         <form>
 <input type="text" name="search">
 </form>
+        
         <ul>
-            <li id="city"><img src="pictos/city.png" /></li>
+            
+            <!-- La j'ai pris des .png de the noun project mais j'ai des problème à le resizer.
+            
+            <li id="city"><img  src="pictos/city.png" /></li>
+            <li id="audio"><img src="pictos/audio.png" /></li>
+            <li id="image"><img src="pictos/image.png" /></li>
+            <li id="text"><img src="pictos/text.png" /></li>
+            <li id="video"><img src="pictos/video.png" /></li>
+            <li id="person"><img src="pictos/person.png" /></li>
+            -->
+            
+            <li id="city"><img  src="pictos/city.gif" /></li>
             <li id="audio"><img src="pictos/audio.gif" /></li>
             <li id="image"><img src="pictos/image.gif" /></li>
             <li id="text"><img src="pictos/text.gif" /></li>
             <li id="video"><img src="pictos/video.gif" /></li>
             <li id="person"><img src="pictos/person.gif" /></li>
+            
         </ul>
+        
         <section id="results">
             <article id="solr"> 
                 <p>JimPanse</p>
@@ -29,5 +58,6 @@
                 <p>Rappo</p>
             </article>
         </section>
+        </div>
     </body>
 </html>
