@@ -4,24 +4,25 @@
         <title></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script type="text/JavaScript" src="js/jquery.js"></script> 
+        <script type="text/JavaScript" src="js/mustache.js"></script> 
         <script type="text/JavaScript" src="js/app.js"></script> 
         <link rel="stylesheet" type="text/css" href="css/style.css" /> 
     </head>
     <body>
         <aside>
       <h3>Tags</h3>
-      <ul id="taglist">
-        <li>#juso</li>
-        <li>#paella</li>
-        <li>#nachos</li>
+      <ul id="tags">
+        <li class="tag">#juso</li>
+        <li class="tag">#paella</li>
+        <li class="tag">#nachos</li>
       
       </ul>
       <h3>groupID</h3>
-      <ul>
-        <li>iLoveDinos</li>
-        <li>The naives</li>
-       
+      <ul id="groups">
+        <li class="group">iLoveDinos</li>
+        <li class="group">The naives</li>
       </ul>
+       
     </aside>
         <div id="main">
         <img class="dino" src="pictos/dino.png" />
@@ -29,7 +30,7 @@
 <input type="text" name="search">
 </form>
         
-        <ul>
+        <ul id="roles">
             
             <!-- La j'ai pris des .png de the noun project mais j'ai des problème à le resizer.
             
@@ -41,12 +42,12 @@
             <li id="person"><img src="pictos/person.png" /></li>
             -->
             
-            <li id="city"><img  src="pictos/city.gif" /></li>
-            <li id="audio"><img src="pictos/audio.gif" /></li>
-            <li id="image"><img src="pictos/image.gif" /></li>
-            <li id="text"><img src="pictos/text.gif" /></li>
-            <li id="video"><img src="pictos/video.gif" /></li>
-            <li id="person"><img src="pictos/person.gif" /></li>
+            <li id="city" class="role"><img  src="pictos/city.gif" /></li>
+            <li id="audio" class="role"><img src="pictos/audio.gif" /></li>
+            <li id="image" class="role"><img src="pictos/image.gif" /></li>
+            <li id="text" class="role"><img src="pictos/text.gif" /></li>
+            <li id="video" class="role"><img src="pictos/video.gif" /></li>
+            <li id="person" class="role"><img src="pictos/person.gif" /></li>
             
         </ul>
         

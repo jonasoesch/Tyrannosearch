@@ -7,6 +7,12 @@ $(document).ready( function() {
 			search(value);
 		}, 200 );
 	});
+
+  $("#roles").on("click", ".role", function() {}); 
+  $("#tags").on("click", ".tag", function() {}); 
+  $("#groups").on("click", ".group", function() {}); 
+
+  
 	
 });
 
@@ -165,39 +171,33 @@ function newResults(results) {
  *
  */
 function displayResults(results) {
-    
-    $(results).each( function(index, result) {
+
+    var tpl = "<article id='{{id}}' class='{{role}}'><h1>{{title}}</h1><p>{{body}}</p></article>"
+      
+      $(results).each( function(index, result) {
         
-        // Person
+        // Default values for a result
+        var data = {
+          id: result.id,
+          role: result.role,
+          title: result.title,
+          body: result.description
+        };
+ 
+        // Display for Person differs
         if(result.role == "person") {
-            var html = '<article id="'+ result.id +'" class="person"><h1>'+ result.firstname +' '+ result.lastname +'</h1><p>'+ result.biography +'</p></article>';
+            data.title = [result.firstname, result.lastname].join(" ");
+            data.body = result.biography;
         }
         
-        // City
+        // City differs too
         if(result.role == "city") {
-            var html = '<article id="'+ result.id +'" class="city"><h1>'+ result['city.name'] +'</h1><p>'+ result['city.region.name'] +'</p></article>';
+            data.title = result['city.name'];
+            data.body = result['city.region.name'];
         }
         
-        // Video
-        if(result.role == "video") {
-            var html = '<article id="'+ result.id +'" class="video"><h1>'+ result.title +'</h1><p>'+ result.description +'</p></article>';
-        }
-        
-        // audio
-        if(result.role == "audio") {
-            var html = '<article id="'+ result.id +'" class="audio"><h1>'+ result.title +'</h1><p>'+ result.description +'</p></article>';
-        }
-        
-        // Image
-        if(result.role == "image") {
-            var html = '<article id="'+ result.id +'" class="image"><h1>'+ result.title +'</h1><p>'+ result.description +'</p></article>';
-        }
-        
-        // Text
-        if(result.role == "text") {
-            var html = '<article id="'+ result.id +'" class="text"><h1>'+ result.title +'</h1><p>'+ result.description +'</p></article>';
-        }
-        
+
+        var html = Mustache.render(tpl, data);
         $("section#results").append(html);
     });
 }
