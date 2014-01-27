@@ -1,10 +1,21 @@
 $(document).ready( function() {
+
+  // Evil, evil global object :-)
+  window.state = 
+  {
+  	text: "*:*",
+  	roles: [],
+  	tags: [],
+	  groups: [],
+  	rows: 10,
+  	page: 1
+  }
 	
 	// Call the function getAddress when a character is writes
 	$("form").on("keyup", 'input', function() {	
-		var value = $(this).val();
+		state.text = $(this).val();
 		delay(function(){
-			search(value);
+			querySolr();
 		}, 200 );
 	});
 
@@ -12,7 +23,6 @@ $(document).ready( function() {
   $("#tags").on("click", ".tag", function() {}); 
   $("#groups").on("click", ".group", function() {}); 
 
-  
 	
 });
 
@@ -21,11 +31,6 @@ $(document).ready( function() {
 /*
  *	New search
  */
-function search(text) {
-    var query = {};
-    query.text = text;
-	querySolr(query);
-}
 
 
 /*
@@ -46,22 +51,13 @@ var delay = (function(){
  *
  */
 
-function querySolr(query) {
-    if(query == null) {var query = {};}
-    
-    if(query.text == (null || "")) {query.text = "*:*";}  
-    if(query.roles == null) {query.role = [];}
-    if(query.tags == null) {query.tags = [];}
-    if(query.groups == null) {query.groups = [];}
-    if(query.page == null) {query.page = 1;}
-    
+function querySolr() {
     var url = "http://localhost:8983/solr/select";
     var request = {};
-    var nbArticles = 10;
     
-    request['q'] = query.text;
-    request['start'] = (query.page * nbArticles) - nbArticles;
-    request['rows'] = nbArticles;
+    request['q'] = state.text;
+    request['start'] = (state.page * state.rows) - state.rows;
+    request['rows'] = state.rows;
     request['fl'] = "*";
     request['wt'] = "json";
     request['facet'] = "true";
@@ -82,7 +78,7 @@ function querySolr(query) {
 		success: function (data) {
 			console.log(data);
 			
-			if(query.page == 1) {
+			if(state.page == 1) {
     			reloadTotalFound(data.response.numFound);
     			newResults(data.response.docs);
     			reloadRoleFacet(data.facet_counts.facet_fields.role);
