@@ -1,29 +1,46 @@
 $(document).ready( function() {
 
-  // Evil, evil global object :-)
-  window.state = 
-  {
-  	text: "*:*",
-  	roles: [],
-  	tags: [],
-	  groups: [],
-  	rows: 10,
-  	page: 1
-  }
-	
+
+    /* User Interactions */
 	// Call the function getAddress when a character is writes
 	$("form").on("keyup", 'input', function() {	
-		state.text = $(this).val();
 		delay(function(){
-			querySolr();
+			search();
 		}, 200 );
 	});
+    
+    // Role clicked
+    $("#roles").on("click", ".role", function() {
+        
+    });
+    
+    // Tag clicked
+    $("#tags").on("click", ".tag", function() {
+        
+    });
+    
+    // Group clicked
+    $("#groups").on("click", ".group", function() {
+        
+    });
 
-  $("#roles").on("click", ".role", function() {}); 
-  $("#tags").on("click", ".tag", function() {}); 
-  $("#groups").on("click", ".group", function() {}); 
 
-	
+    /* ------- System Events -------- */
+    $("#results").on("newResults", function(event, data) {
+    	reloadTotalFound(data.response.numFound);
+    	newResults(data.response.docs);
+    	reloadRoleFacet(data.facet_counts.facet_fields.role);
+    	reloadGroupFacet(data.facet_counts.facet_fields.groupname);
+    	reloadTagFacet(data.facet_counts.facet_fields.tag);
+    	if(data.spellcheck != null) {
+        	displaySuggestions(data.spellcheck.suggestions[1]);
+    	}
+    });
+
+    $("#results").on("moreResults", function(event, data) {
+        displayResults(data.response.docs);
+    });
+
 });
 
 
@@ -31,7 +48,9 @@ $(document).ready( function() {
 /*
  *	New search
  */
-
+function search() {
+    querySolr();
+}
 
 /*
  *	delay() function is added to jQuery
@@ -45,17 +64,93 @@ var delay = (function(){
 	};
 })();
 
+/*
+ * Facet Query
+ * @param:  field = the name of the facet field
+ *          values = value of field to restrict query
+ */
+function facetQuery(field, values) {
+    var query = "";
+    query += " +"+ field +":(";
+    
+    $(values).each( function(index, value) {          
+        query += value + " ";
+    });
+    
+    query += ")";
+    return query;
+}
+
+function getState() {
+    var state = 
+    {
+        text: "",
+        roles: [],
+        tags: [],
+        groups: [],
+        rows: 10,
+        page: 1
+    }
+    
+   var text = $("input").val();
+   if(text != "") {
+        state.text = text;
+   }
+
+    $('#roles li').each(function(index) {
+        if($(this).data("selected") === true ) {
+            state.roles.push($(this).data("value"));
+        }
+    });
+
+    
+    $('#tags li').each(function(index) {
+        if($(this).data("selected") === true ) {
+            state.tags.push($(this).text());
+        }
+    });
+
+    $('#groups li').each(function(index) {
+        if($(this).data("selected") === true ) {
+            state.tags.push($(this).text());
+        }
+    });
+
+    return state;
+}
+
 
 /*
  * Get documents in Solr
  *
  */
-
 function querySolr() {
     var url = "http://localhost:8983/solr/select";
     var request = {};
     
-    request['q'] = state.text;
+    var state = getState();
+    
+    var query = state.text;
+    
+    if(state.roles.length) {
+        query += facetQuery("role", state.roles);
+    }
+    
+    if(state.tags.length) {
+        query += facetQuery("tag", state.tags);
+    }
+    
+    if(state.groups.length) {
+        query += facetQuery("groupname", state.groups);
+    }
+    
+    if(query == "") {
+        query = "*:*";
+    }
+    
+    console.log(query);
+    
+    request['q'] = query;
     request['start'] = (state.page * state.rows) - state.rows;
     request['rows'] = state.rows;
     request['fl'] = "*";
@@ -64,6 +159,8 @@ function querySolr() {
     request['facet.field'] = ["role", "tag", "groupname"];
     request['f.tag.facet.limit'] = "5";
     request['spellcheck'] = "true";
+    
+    console.log(state);
     
     jQuery.ajaxSettings.traditional = true;
   
@@ -77,20 +174,13 @@ function querySolr() {
 		},
 		success: function (data) {
 			console.log(data);
-			
+
 			if(state.page == 1) {
-    			reloadTotalFound(data.response.numFound);
-    			newResults(data.response.docs);
-    			reloadRoleFacet(data.facet_counts.facet_fields.role);
-    			reloadGroupFacet(data.facet_counts.facet_fields.groupname);
-    			reloadTagFacet(data.facet_counts.facet_fields.tag);
+                $("#results").trigger("newResults", data);
     			
-    			if(data.spellcheck != null) {
-        			displaySuggestions(data.spellcheck.suggestions[1]);
-    			}
     			
 			} else {
-    			displayResults(data.response.docs);
+                $("#results").trigger("moreResults", data);
 			}
 		}
 	});
