@@ -4,7 +4,6 @@ $(document).ready( function() {
     /* User Interactions */
 	// Call the function getAddress when a character is writes
 	$("form").on("keyup", 'input', function() {	
-		state.text = $(this).val();
 		delay(function(){
 			search();
 		}, 200 );
@@ -67,16 +66,22 @@ var delay = (function(){
 
 function getState() {
     var state = 
-  {
-  	text: "*:*",
-  	roles: [],
-  	tags: [],
-	  groups: [],
-  	rows: 10,
-  	page: 1
-  }
-  
-  return state;
+    {
+        text: "*:*",
+        roles: [],
+        tags: [],
+        groups: [],
+        rows: 10,
+        page: 1
+    }
+    
+   var text = $(this).val();
+   if(text != "") {
+        state.text = text;
+   }
+    
+
+    return state;
 }
 
 /*
