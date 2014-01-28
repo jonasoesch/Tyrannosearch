@@ -75,11 +75,29 @@ function getState() {
         page: 1
     }
     
-   var text = $(this).val();
+   var text = $("input").val();
    if(text != "") {
         state.text = text;
    }
+
+    $('#roles li').each(function(index) {
+        if($(this).data("selected") === true ) {
+            state.roles.push($(this).data("value"));
+        }
+    });
+
     
+    $('#tags li').each(function(index) {
+        if($(this).data("selected") === true ) {
+            state.tags.push($(this).text());
+        }
+    });
+
+    $('#groups li').each(function(index) {
+        if($(this).data("selected") === true ) {
+            state.tags.push($(this).text());
+        }
+    });
 
     return state;
 }
