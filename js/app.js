@@ -102,7 +102,6 @@ function getState() {
             state.roles.push($(this).data("value"));
         }
     });
-
     
     $('#tags li').each(function(index) {
         if($(this).data("selected") === true ) {
@@ -130,7 +129,7 @@ function querySolr() {
     
     var state = getState();
     
-    var query = state.text;
+    var query = "+" + state.text;
     
     if(state.roles.length) {
         query += facetQuery("role", state.roles);
@@ -159,8 +158,6 @@ function querySolr() {
     request['facet.field'] = ["role", "tag", "groupname"];
     request['f.tag.facet.limit'] = "5";
     request['spellcheck'] = "true";
-    
-    console.log(state);
     
     jQuery.ajaxSettings.traditional = true;
   
