@@ -4,7 +4,6 @@ $(document).ready( function() {
     /* User Interactions */
 	// Call the function getAddress when a character is writes
 	$("form").on("keyup", 'input', function() {	
-		state.text = $(this).val();
 		delay(function(){
 			search();
 		}, 200 );
@@ -50,7 +49,7 @@ $(document).ready( function() {
  *	New search
  */
 function search() {
-  querySolr();
+    querySolr();
 }
 
 /*
@@ -65,19 +64,24 @@ var delay = (function(){
 	};
 })();
 
-function getState() {
-    var state = 
-  {
-  	text: "*:*",
-  	roles: [],
-  	tags: [],
-	  groups: [],
-  	rows: 10,
-  	page: 1
-  }
-  
-  return state;
+
+/*
+ * Facet Query
+ * @param:  field = the name of the facet field
+ *          values = value of field to restrict query
+ */
+function facetQuery(field, values) {
+    var query = "";
+    query += " +"+ field +":(";
+    
+    $(values).each( function(index, value) {          
+        query += value + " ";
+    });
+    
+    query += ")";
+    return query;
 }
+
 
 /*
  * Get documents in Solr
@@ -89,7 +93,27 @@ function querySolr() {
     
     var state = getState();
     
-    request['q'] = state.text;
+    var query = state.text;
+    
+    if(state.roles.length) {
+        query += facetQuery("role", state.roles);
+    }
+    
+    if(state.tags.length) {
+        query += facetQuery("tag", state.tags);
+    }
+    
+    if(state.groups.length) {
+        query += facetQuery("groupname", state.groups);
+    }
+    
+    if(query == "") {
+        query = "*:*";
+    }
+    
+    console.log(query);
+    
+    request['q'] = query;
     request['start'] = (state.page * state.rows) - state.rows;
     request['rows'] = state.rows;
     request['fl'] = "*";
@@ -98,6 +122,8 @@ function querySolr() {
     request['facet.field'] = ["role", "tag", "groupname"];
     request['f.tag.facet.limit'] = "5";
     request['spellcheck'] = "true";
+    
+    console.log(state);
     
     jQuery.ajaxSettings.traditional = true;
   
@@ -112,7 +138,6 @@ function querySolr() {
 		success: function (data) {
 			console.log(data);
 
-            
 			if(state.page == 1) {
                 $("#results").trigger("newResults", data);
     			
