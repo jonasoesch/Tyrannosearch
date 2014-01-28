@@ -111,7 +111,7 @@ function getState() {
 
     $('#groups li').each(function(index) {
         if($(this).data("selected") === true ) {
-            state.tags.push($(this).text());
+            state.groups.push($(this).text());
         }
     });
 
@@ -128,6 +128,8 @@ function querySolr() {
     var request = {};
     
     var state = getState();
+    
+    console.log(state);
     
     var query = "+" + state.text;
     
