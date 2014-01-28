@@ -29,7 +29,25 @@ header {
     position: fixed;
     top: 0;
     background-color: white;
-    height: 100px;
+    height: auto;
+    width: 100%;
+}
+img.dino{
+    
+     
+    max-width: 10%;
+    height: auto;
+}
+
+input{
+    width: 60%; 
+    line-height:27px;
+    text-indent:5px; 
+    font-family:arial, sans-serif; 
+    font-size:1em; 
+    color:#333; 
+    background: #fff; 
+    border:solid 1px #d9d9d9; 
 }
 
 #main { 
@@ -68,53 +86,38 @@ img.search{
     
 }
 
-img.dino{
-    
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 33%;
-    height: auto;
-    
-}
 
-
-input{
-    width: 66%; 
-    line-height:27px;
-    text-indent:5px; 
-    font-family:arial, sans-serif; 
-    font-size:1em; 
-    color:#333; 
-    background: #fff; 
-    border:solid 1px #d9d9d9; 
-    border-top:solid 1px #c0c0c0; 
-    border-right:none;
-}
 
 ul{
-    width:100%;
+    width:80%;
     list-style:none;
+    margin: auto;
+    text-align:center;
+    margin-left:auto;margin-right:auto
     
     
 }
 
 li{
     
-    display:inline-block
+    display:inline-block;
+        
 }
 li.img{
   
     max-width: 9.99%;
     height: auto;
     
+    
+    
 }
  #roles img {
-            width: 10%;
+            width: 3%;
           }
 
           #roles li {
             display: inline;
+            
           }
 
           @media screen and (max-width: 400px) {
