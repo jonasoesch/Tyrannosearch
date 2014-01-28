@@ -10,12 +10,14 @@ $(document).ready( function() {
   	rows: 10,
   	page: 1
   }
-	
+
+
+    /* User Interactions */
 	// Call the function getAddress when a character is writes
 	$("form").on("keyup", 'input', function() {	
 		state.text = $(this).val();
 		delay(function(){
-			querySolr();
+			search();
 		}, 200 );
 	});
 
@@ -23,7 +25,23 @@ $(document).ready( function() {
   $("#tags").on("click", ".tag", function() {}); 
   $("#groups").on("click", ".group", function() {}); 
 
-	
+
+    /* ------- System Events -------- */
+    $("#results").on("newResults", function(event, data) {
+    	reloadTotalFound(data.response.numFound);
+    	newResults(data.response.docs);
+    	reloadRoleFacet(data.facet_counts.facet_fields.role);
+    	reloadGroupFacet(data.facet_counts.facet_fields.groupname);
+    	reloadTagFacet(data.facet_counts.facet_fields.tag);
+    	if(data.spellcheck != null) {
+        	displaySuggestions(data.spellcheck.suggestions[1]);
+    	}
+    });
+
+    $("#results").on("moreResults", function(event, data) {
+        displayResults(data.response.docs);
+    });
+
 });
 
 
@@ -31,7 +49,9 @@ $(document).ready( function() {
 /*
  *	New search
  */
-
+function search() {
+  querySolr();
+}
 
 /*
  *	delay() function is added to jQuery
@@ -77,20 +97,14 @@ function querySolr() {
 		},
 		success: function (data) {
 			console.log(data);
-			
+
+
 			if(state.page == 1) {
-    			reloadTotalFound(data.response.numFound);
-    			newResults(data.response.docs);
-    			reloadRoleFacet(data.facet_counts.facet_fields.role);
-    			reloadGroupFacet(data.facet_counts.facet_fields.groupname);
-    			reloadTagFacet(data.facet_counts.facet_fields.tag);
+                $("#results").trigger("newResults", data);
     			
-    			if(data.spellcheck != null) {
-        			displaySuggestions(data.spellcheck.suggestions[1]);
-    			}
     			
 			} else {
-    			displayResults(data.response.docs);
+                $("#results").trigger("moreResults", data);
 			}
 		}
 	});
