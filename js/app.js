@@ -18,10 +18,21 @@ $(document).ready( function() {
 			querySolr();
 		}, 200 );
 	});
-
-  $("#roles").on("click", ".role", function() {}); 
-  $("#tags").on("click", ".tag", function() {}); 
-  $("#groups").on("click", ".group", function() {}); 
+    
+    // Role clicked
+    $("#roles").on("click", ".role", function() {
+        
+    });
+    
+    // Tag clicked
+    $("#tags").on("click", ".tag", function() {
+        
+    });
+    
+    // Group clicked
+    $("#groups").on("click", ".group", function() {
+        
+    });
 
 	
 });
