@@ -67,7 +67,7 @@ var delay = (function(){
 function getState() {
     var state = 
     {
-        text: "*:*",
+        text: "",
         roles: [],
         tags: [],
         groups: [],
