@@ -1,16 +1,5 @@
 $(document).ready( function() {
 
-  // Evil, evil global object :-)
-  window.state = 
-  {
-  	text: "*:*",
-  	roles: [],
-  	tags: [],
-	  groups: [],
-  	rows: 10,
-  	page: 1
-  }
-
 
     /* User Interactions */
 	// Call the function getAddress when a character is writes
@@ -76,15 +65,29 @@ var delay = (function(){
 	};
 })();
 
+function getState() {
+    var state = 
+  {
+  	text: "*:*",
+  	roles: [],
+  	tags: [],
+	  groups: [],
+  	rows: 10,
+  	page: 1
+  }
+  
+  return state;
+}
 
 /*
  * Get documents in Solr
  *
  */
-
 function querySolr() {
     var url = "http://localhost:8983/solr/select";
     var request = {};
+    
+    var state = getState();
     
     request['q'] = state.text;
     request['start'] = (state.page * state.rows) - state.rows;
@@ -109,7 +112,7 @@ function querySolr() {
 		success: function (data) {
 			console.log(data);
 
-
+            
 			if(state.page == 1) {
                 $("#results").trigger("newResults", data);
     			
