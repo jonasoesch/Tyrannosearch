@@ -64,7 +64,6 @@ var delay = (function(){
 	};
 })();
 
-
 /*
  * Facet Query
  * @param:  field = the name of the facet field
@@ -80,6 +79,44 @@ function facetQuery(field, values) {
     
     query += ")";
     return query;
+}
+
+function getState() {
+    var state = 
+    {
+        text: "",
+        roles: [],
+        tags: [],
+        groups: [],
+        rows: 10,
+        page: 1
+    }
+    
+   var text = $("input").val();
+   if(text != "") {
+        state.text = text;
+   }
+
+    $('#roles li').each(function(index) {
+        if($(this).data("selected") === true ) {
+            state.roles.push($(this).data("value"));
+        }
+    });
+
+    
+    $('#tags li').each(function(index) {
+        if($(this).data("selected") === true ) {
+            state.tags.push($(this).text());
+        }
+    });
+
+    $('#groups li').each(function(index) {
+        if($(this).data("selected") === true ) {
+            state.tags.push($(this).text());
+        }
+    });
+
+    return state;
 }
 
 
