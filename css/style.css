@@ -172,6 +172,7 @@ li.img{
 
           #roles li {
             display: inline;
+            text-align: center;
             
           }
 
@@ -253,4 +254,8 @@ header.intro ul#roles li {
 header.intro ul#roles img {
     max-width: 4%;
     min-width: 30px;
+}
+#results{
+    padding-bottom: 20px;
+
 }
