@@ -16,6 +16,7 @@ body{
     font-weight: 300;
     margin: 0;
     background: #F7F7F7;
+    min-width: 600px;
 }
 
 p.small{
@@ -49,7 +50,7 @@ img.dino{
 
 header.normal form {
     width: 52%; 
-    margin: 5px auto 0;
+    margin: 5px auto 5px;
 }
 
 header.normal form img.dino {
@@ -162,7 +163,8 @@ li.img{
 }
 
  #roles img {
-            max-width: 3%;
+            max-width: 7%;
+            min-width: 30px;
             cursor: pointer;
             
           }
