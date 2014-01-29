@@ -20,6 +20,11 @@ $(document).ready( function() {
         search();
     });
     
+    // Show the detailed article
+    $("#main").on("click", "article", function() {
+        getDocument($(this).attr("id"));
+    });
+    
  
     /* ------- System Events -------- */
     $("#results").on("newResults", function(event, data) {
@@ -136,7 +141,11 @@ function querySolr() {
     
     console.log(state);
     
-    var query = "+" + state.text;
+    var query = "";
+    
+    if(state.text.length) {
+        query += "+" + state.text;
+    }
     
     if(state.roles.length) {
         query += facetQuery("role", state.roles);
@@ -186,6 +195,41 @@ function querySolr() {
 			} else {
                 $("#results").trigger("moreResults", data);
 			}
+		}
+	});
+}
+
+/*
+ * Get a document in Solr
+ *
+ */
+function getDocument(id) {
+    var url = "http://localhost:8983/solr/select";
+    var request = {};
+    
+    
+    if(id == null || id == "") {
+        displayError("The function getDocument() requires an id.");
+    }
+    
+    request['q'] = "id:" + id;
+    request['start'] = "0";
+    request['rows'] = "1";
+    request['fl'] = "*";
+    request['wt'] = "json";
+    
+    jQuery.ajaxSettings.traditional = true;
+  
+    $.ajax({
+		type: "POST",
+		dataType: "json",
+		url: url,
+		data: request,
+		error: function () {
+			displayError("The server doesn't respond.");
+		},
+		success: function (data) {
+			console.log(data);
 		}
 	});
 }
