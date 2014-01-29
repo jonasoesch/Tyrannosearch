@@ -1,6 +1,7 @@
 $(document).ready( function() {
 
-    startSearch();
+    //startSearch();
+    $("header").addClass("normal");
 
     /* User Interactions */
 	// Call the function getAddress when a character is writes
