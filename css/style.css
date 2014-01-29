@@ -62,6 +62,9 @@ input{
     
 }
 
+li[data-selected='true'] {
+    color: red;
+}
 
 h2{
     font-family: 'Lato', sans-serif;
