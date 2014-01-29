@@ -39,7 +39,7 @@ $(document).ready( function() {
  *	New search
  */
 function search() {
-  querySolr();
+    querySolr();
 }
 
 
@@ -64,6 +64,23 @@ var delay = (function(){
 	};
 })();
 
+/*
+ * Facet Query
+ * @param:  field = the name of the facet field
+ *          values = value of field to restrict query
+ */
+function facetQuery(field, values) {
+    var query = "";
+    query += " +"+ field +":(";
+    
+    $(values).each( function(index, value) {          
+        query += value + " ";
+    });
+    
+    query += ")";
+    return query;
+}
+
 function getState() {
     var state = 
     {
@@ -85,7 +102,6 @@ function getState() {
             state.roles.push($(this).data("value"));
         }
     });
-
     
     $('#tags li').each(function(index) {
         if($(this).data("selected") === true ) {
@@ -95,12 +111,13 @@ function getState() {
 
     $('#groups li').each(function(index) {
         if($(this).data("selected") === true ) {
-            state.tags.push($(this).text());
+            state.groups.push($(this).text());
         }
     });
 
     return state;
 }
+
 
 /*
  * Get documents in Solr
@@ -112,7 +129,29 @@ function querySolr() {
     
     var state = getState();
     
-    request['q'] = state.text;
+    console.log(state);
+    
+    var query = "+" + state.text;
+    
+    if(state.roles.length) {
+        query += facetQuery("role", state.roles);
+    }
+    
+    if(state.tags.length) {
+        query += facetQuery("tag", state.tags);
+    }
+    
+    if(state.groups.length) {
+        query += facetQuery("groupname", state.groups);
+    }
+    
+    if(query == "") {
+        query = "*:*";
+    }
+    
+    console.log(query);
+    
+    request['q'] = query;
     request['start'] = (state.page * state.rows) - state.rows;
     request['rows'] = state.rows;
     request['fl'] = "*";
@@ -135,7 +174,6 @@ function querySolr() {
 		success: function (data) {
 			console.log(data);
 
-            
 			if(state.page == 1) {
                 $("#results").trigger("newResults", data);
     			
