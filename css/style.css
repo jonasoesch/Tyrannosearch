@@ -188,12 +188,10 @@ iframe{
     margin-top: 1em;
 }
 
-<<<<<<< HEAD
 [data-selected="true"] {
     /* Styles */
     color: #898C90;
 }
-=======
 
 /**************************/
 /***** Start interface ****/
@@ -233,7 +231,3 @@ header.intro ul#roles img {
     max-width: 4%;
     min-width: 30px;
 }
-
-
-
->>>>>>> b702c80b776daeb5bbc089775d7c3b9ac3d8a1fe
