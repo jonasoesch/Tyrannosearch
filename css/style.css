@@ -48,19 +48,17 @@ img.dino{
 }
 
 header.normal form {
-    width: 60%; 
+    width: 52%; 
     margin: 5px auto 0;
-    overflow: hidden;
 }
 
 header.normal form img.dino {
     float: left;
+    margin-left: -65px;
 }
 
 header.normal form input {
-    width: calc(100% - 65px);
     position: relative;
-    float: right;
 }
 
 input {
@@ -72,7 +70,7 @@ input {
     background: #fff; 
     border:solid 1px #d9d9d9; 
     display: inline-block;
-    width: 100%;
+    width: 99%;
 }
 
 #main { 
