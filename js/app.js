@@ -1,5 +1,6 @@
 $(document).ready( function() {
-
+    
+    // Show start interface
     startSearch();
 
     /* User Interactions */
@@ -23,6 +24,16 @@ $(document).ready( function() {
     // Scroll
     $("#results").scroll(infiniteScrolling());
 
+    // Show the detailed article
+    $("#main").on("click", "article:not(.details)", function() {
+        getDocument($(this).attr("id"));
+    });
+    
+    // Hide the detailed article
+    $("#main").on("click", "article.details", function() {
+        hideDetails($(this).attr("id"));
+    });
+    
     /* ------- System Events -------- */
     $("#results").on("newResults", function(event, data) {
     	reloadTotalFound(data.response.numFound);
@@ -38,6 +49,10 @@ $(document).ready( function() {
 
     $("#results").on("moreResults", function(event, data) {
         displayResults(data.response.docs);
+    });
+    
+    $("#results").on("newResult", function(event, data) {
+        displayDetails(data.response.docs[0]);
     });
 
 });
@@ -74,8 +89,8 @@ var delay = (function(){
 
 /*
  * Facet Query
- * @param:  field = the name of the facet field
- *          values = value of field to restrict query
+ * @param field = the name of the facet field
+ * @param values = value of field to restrict query
  */
 function facetQuery(field, values) {
     var query = "";
@@ -139,7 +154,11 @@ function querySolr() {
     
     console.log(state);
     
-    var query = "+" + state.text;
+    var query = "";
+    
+    if(state.text.length) {
+        query += "+" + state.text;
+    }
     
     if(state.roles.length) {
         query += facetQuery("role", state.roles);
@@ -189,6 +208,44 @@ function querySolr() {
 			} else {
                 $("#results").trigger("moreResults", data);
 			}
+		}
+	});
+}
+
+
+/*
+ * Get a document in Solr
+ *
+ */
+function getDocument(id) {
+    var url = "http://localhost:8983/solr/select";
+    var request = {};
+    
+    
+    if(id == null || id == "") {
+        displayError("The function getDocument() requires an id.");
+        return false;
+    }
+    
+    request['q'] = "id:" + id;
+    request['start'] = "0";
+    request['rows'] = "1";
+    request['fl'] = "*";
+    request['wt'] = "json";
+    
+    jQuery.ajaxSettings.traditional = true;
+  
+    $.ajax({
+		type: "POST",
+		dataType: "json",
+		url: url,
+		data: request,
+		error: function () {
+			displayError("The server doesn't respond.");
+		},
+		success: function (data) {
+			console.log(data);
+			$("#results").trigger("newResult", data);
 		}
 	});
 }
@@ -293,6 +350,62 @@ function displayResults(results) {
         var html = Mustache.render(tpl, data);
         $("section#results").append(html);
     });
+}
+
+
+/*
+ * Display details in the interface
+ *
+ */
+function displayDetails(result) {
+    
+    var id = result.id;
+    
+    var article = $("article[id='" + id + "']");
+    
+    $(article).hide();
+    
+    console.log(article);
+    
+    var tpl = "<article id='{{id}}' class='{{role}} details'><h1>{{title}}</h1><p>{{body}}</p></article>";
+    
+    // Default values for a result
+    var data = {
+      id: result.id,
+      role: result.role,
+      title: result.title,
+      body: result.description
+    };
+
+    // Display for Person differs
+    if(result.role == "person") {
+        data.title = [result.firstname, result.lastname].join(" ");
+        data.body = result.biography;
+    }
+    
+    // City differs too
+    if(result.role == "city") {
+        data.title = result['city.name'];
+        data.body = result['city.region.name'];
+    }
+    
+
+    var html = Mustache.render(tpl, data);
+    $(article).after(html);
+}
+
+
+/*
+ * Remove details in the interface
+ *
+ */
+function hideDetails(id) {
+    var article = $("article[id='" + id + "']:not(.details)");
+    var articleDetail = $("article[id='" + id + "'].details");
+    
+    $(articleDetail).remove();
+    $(article).show();
+    
 }
 
 

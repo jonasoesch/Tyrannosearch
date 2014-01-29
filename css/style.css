@@ -15,16 +15,22 @@ body{
     font-family: "Helvetica Neue", Helvetica, sans;
     font-weight: 300;
     margin: 0;
+    background: #F7F7F7;
+    min-width: 600px;
+}
+
+p.small{
+    font-weight: 200;
 }
 aside{
     padding-left: 3.33%;
-    margin-top:20%;
+    margin-top:10%;
     height:100%;
     width:20%;
     float:left;
     margin-left: auto; 
     margin-right: auto;
-   
+    position: fixed;
 }
 
 header.normal {
@@ -33,30 +39,46 @@ header.normal {
     background-color: white;
     height: auto;
     width: 100%;
+    border-bottom: 1px solid #cdcdcd;
 }
 img.dino{
-    
-     
-    max-width: 10%;
-    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 60px;
 }
 
-input{
-    width: 60%; 
-    line-height:27px;
+header.normal form {
+    width: 52%; 
+    margin: 5px auto 5px;
+}
+
+header.normal form img.dino {
+    float: left;
+    margin-left: -65px;
+}
+
+header.normal form input {
+    position: relative;
+}
+
+input {
+    line-height:37px;
     text-indent:5px; 
     font-family:arial, sans-serif; 
     font-size:1em; 
     color:#333; 
     background: #fff; 
-    border:solid 1px #d9d9d9; 
+    border: 1px solid #cdcdcd;
+    display: inline-block;
+    width: 99%;
 }
 
 #main { 
     padding:0px;
-    padding-top: 10%;
-    height:66.66%;
-    width: 50%; 
+    padding-top: 90px;
+    height:80%;
+    width: 55%; 
     margin:0px auto;
     text-align:center;
     display: block;
@@ -64,9 +86,8 @@ input{
     
 }
 
-li[data-selected='true'] {
-    color: red;
-}
+
+
 
 h2{
     font-family: 'Lato', sans-serif;
@@ -94,11 +115,13 @@ img.search{
 
 
 ul{
+    padding:0;
     width:80%;
     list-style:none;
     margin: auto;
-    text-align:center;
-    margin-left:auto;margin-right:auto
+    text-align:left;
+    margin-left:auto;
+    margin-right:auto;
     
     
 }
@@ -106,22 +129,50 @@ ul{
 li{
     
     display:inline-block;
+    margin:1em;
         
 }
+li.tag{
+    
+    text-align:left;
+    display:inline;
+     margin:0;
+     text-decoration: underline;
+     cursor: pointer;
+  
+}
+li.group{
+    
+    text-align:left;
+    display:inline;
+     margin:0;
+     text-decoration: underline;
+     cursor: pointer;
+}
+
 li.img{
   
     max-width: 9.99%;
     height: auto;
-    
+  
     
     
 }
+
+#roles {
+    padding-left: 0;
+}
+
  #roles img {
-            max-width: 3%;
+            max-width: 7%;
+            min-width: 30px;
+            cursor: pointer;
+            
           }
 
           #roles li {
             display: inline;
+            text-align: center;
             
           }
 
@@ -130,15 +181,14 @@ li.img{
               float: none;
             }
           }
-section{
-    margin-top: 9.99%;
-}
 article{
     text-align: left;
     text-indent:3%;
-   border: 1px solid black;
+   background: white;
+   border: 1px solid #cdcdcd;
    margin:3%;
     cursor: pointer;
+    border: 1px solid #cdcdcd;
   
 }
 table{
@@ -146,20 +196,36 @@ table{
     padding-bottom: 1em;
     text-align: left;
 }
-audio controls{
+audio{
    display: table;
-    margin: 0 auto;
+    margin: auto;
+    margin-top: 1em;
+}
+video{
+   display: table;
+    margin: auto;
+    margin-top: 1em;
+}
+iframe{
+   display: table;
+    margin: auto;
+    margin-top: 1em;
 }
 
+[data-selected="true"] {
+    /* Styles */
+    color: #898C90;
+}
 
 /**************************/
 /***** Start interface ****/
 /**************************/
 
 header.intro {
-    height: 40%;
     top: 30%;
     position: absolute;
+    width: 100%;
+    /*background-image: url('../pictos/mac.png');*/
 }
 
 header.intro img.dino {
@@ -175,21 +241,3 @@ header.intro input {
     max-width: 40%;
     min-width: 300px;
 }
-
-header.intro ul {
-    display: block;
-    margin: 1% auto 0;
-    padding: 0;
-}
-
-header.intro ul#roles li {
-    margin: 0 1%;
-}
-
-header.intro ul#roles img {
-    max-width: 4%;
-    min-width: 30px;
-}
-
-
-
