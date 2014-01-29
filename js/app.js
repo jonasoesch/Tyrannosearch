@@ -10,21 +10,11 @@ $(document).ready( function() {
 	});
     
     // Role clicked
-    $("#roles").on("click", ".role", function() {
-        
+    $("#roles, #tags, #groups").on("click", "li", function() {
+        toggleSelected($(this));
     });
     
-    // Tag clicked
-    $("#tags").on("click", ".tag", function() {
-        
-    });
-    
-    // Group clicked
-    $("#groups").on("click", ".group", function() {
-        
-    });
-
-
+ 
     /* ------- System Events -------- */
     $("#results").on("newResults", function(event, data) {
     	reloadTotalFound(data.response.numFound);
@@ -50,6 +40,16 @@ $(document).ready( function() {
  */
 function search() {
   querySolr();
+}
+
+
+function toggleSelected(el) {
+    if(el.attr("data-selected") === "true") {
+        el.attr("data-selected", false);
+    } else {
+        el.attr("data-selected", true);
+    } 
+    console.log(el.attr("data-selected"));
 }
 
 /*
