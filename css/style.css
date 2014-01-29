@@ -9,10 +9,12 @@
         
 
 body{
-   height:90%;
-    width: 93%; 
+    height:100%;
+    width: 100%;
+    position: absolute;
     font-family: "Helvetica Neue", Helvetica, sans;
-          font-weight: 300;
+    font-weight: 300;
+    margin: 0;
 }
 aside{
     padding-left: 3.33%;
@@ -25,7 +27,7 @@ aside{
    
 }
 
-header {
+header.normal {
     position: fixed;
     top: 0;
     background-color: white;
@@ -115,7 +117,7 @@ li.img{
     
 }
  #roles img {
-            width: 3%;
+            max-width: 3%;
           }
 
           #roles li {
@@ -148,4 +150,46 @@ audio controls{
    display: table;
     margin: 0 auto;
 }
+
+
+/**************************/
+/***** Start interface ****/
+/**************************/
+
+header.intro {
+    height: 40%;
+    top: 30%;
+    position: absolute;
+}
+
+header.intro img.dino {
+    display: block;
+    margin: 0 auto;
+    max-width: 12%;
+    min-width: 80px;
+}
+
+header.intro input {
+    margin: 2% auto  0;
+    display: block;
+    max-width: 40%;
+    min-width: 300px;
+}
+
+header.intro ul {
+    display: block;
+    margin: 1% auto 0;
+    padding: 0;
+}
+
+header.intro ul#roles li {
+    margin: 0 1%;
+}
+
+header.intro ul#roles img {
+    max-width: 4%;
+    min-width: 30px;
+}
+
+
 
