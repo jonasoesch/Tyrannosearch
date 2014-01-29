@@ -49,7 +49,6 @@ function toggleSelected(el) {
     } else {
         el.attr("data-selected", true);
     } 
-    console.log(el.attr("data-selected"));
 }
 
 /*
@@ -98,19 +97,19 @@ function getState() {
    }
 
     $('#roles li').each(function(index) {
-        if($(this).data("selected") === true ) {
+        if($(this).attr("data-selected") === "true" ) {
             state.roles.push($(this).data("value"));
         }
     });
     
     $('#tags li').each(function(index) {
-        if($(this).data("selected") === true ) {
+    if($(this).attr("data-selected") === "true" ) {
             state.tags.push($(this).text());
         }
     });
 
     $('#groups li').each(function(index) {
-        if($(this).data("selected") === true ) {
+        if($(this).attr("data-selected") === "true" ) {
             state.groups.push($(this).text());
         }
     });
