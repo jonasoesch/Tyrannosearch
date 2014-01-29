@@ -14,13 +14,15 @@ $(document).ready( function() {
 		}
 	});
     
-    // Role clicked
+    // Role, Tag, Group clicked
     $("#roles, #tags, #groups").on("click", "li", function() {
         toggleSelected($(this));
         search();
     });
     
- 
+    // Scroll
+    $("#results").scroll(infiniteScrolling());
+
     /* ------- System Events -------- */
     $("#results").on("newResults", function(event, data) {
     	reloadTotalFound(data.response.numFound);
@@ -31,6 +33,7 @@ $(document).ready( function() {
     	if(data.spellcheck != null) {
         	displaySuggestions(data.spellcheck.suggestions[1]);
     	}
+    	$("*").on("scroll", infiniteScrolling());
     });
 
     $("#results").on("moreResults", function(event, data) {
@@ -327,3 +330,11 @@ function normalSearch() {
     $("#main").show();
 }
 
+
+function infiniteScrolling() {
+    console.log("scroll");
+    if($(window).scrollTop() == $(document).height() - $(window).height())
+    {
+        displayResults();
+    }
+}
