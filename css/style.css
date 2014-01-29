@@ -115,10 +115,11 @@ img.search{
 
 
 ul{
+    padding:0;
     width:80%;
     list-style:none;
     margin: auto;
-    text-align:center;
+    text-align:left;
     margin-left:auto;
     margin-right:auto;
     
