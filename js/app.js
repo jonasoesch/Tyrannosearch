@@ -12,6 +12,7 @@ $(document).ready( function() {
     // Role clicked
     $("#roles, #tags, #groups").on("click", "li", function() {
         toggleSelected($(this));
+        search();
     });
     
  
