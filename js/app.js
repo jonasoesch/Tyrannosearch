@@ -1,5 +1,6 @@
 $(document).ready( function() {
 
+    startSearch();
 
     /* User Interactions */
 	// Call the function getAddress when a character is writes
@@ -7,24 +8,19 @@ $(document).ready( function() {
 		delay(function(){
 			search();
 		}, 200 );
+		
+		if($("header").hasClass("intro")) {
+    		normalSearch();
+		}
 	});
     
     // Role clicked
-    $("#roles").on("click", ".role", function() {
-        
+    $("#roles, #tags, #groups").on("click", "li", function() {
+        toggleSelected($(this));
+        search();
     });
     
-    // Tag clicked
-    $("#tags").on("click", ".tag", function() {
-        
-    });
-    
-    // Group clicked
-    $("#groups").on("click", ".group", function() {
-        
-    });
-
-
+ 
     /* ------- System Events -------- */
     $("#results").on("newResults", function(event, data) {
     	reloadTotalFound(data.response.numFound);
@@ -50,6 +46,15 @@ $(document).ready( function() {
  */
 function search() {
     querySolr();
+}
+
+
+function toggleSelected(el) {
+    if(el.attr("data-selected") === "true") {
+        el.attr("data-selected", false);
+    } else {
+        el.attr("data-selected", true);
+    } 
 }
 
 /*
@@ -98,19 +103,19 @@ function getState() {
    }
 
     $('#roles li').each(function(index) {
-        if($(this).data("selected") === true ) {
+        if($(this).attr("data-selected") === "true" ) {
             state.roles.push($(this).data("value"));
         }
     });
     
     $('#tags li').each(function(index) {
-        if($(this).data("selected") === true ) {
+    if($(this).attr("data-selected") === "true" ) {
             state.tags.push($(this).text());
         }
     });
 
     $('#groups li').each(function(index) {
-        if($(this).data("selected") === true ) {
+        if($(this).attr("data-selected") === "true" ) {
             state.groups.push($(this).text());
         }
     });
@@ -299,4 +304,26 @@ function displayError(message) {
     $("section#results").append(html);
 }
 
+
+/*
+ * Display start interface
+ *
+ */
+function startSearch() {
+    $("header").addClass("intro");
+    $("aside").hide();
+    $("#main").hide();
+}
+
+
+/*
+ * Display normal interface
+ *
+ */
+function normalSearch() {
+    $("header").removeClass("intro");
+    $("header").addClass("normal");
+    $("aside").show();
+    $("#main").show();
+}
 
