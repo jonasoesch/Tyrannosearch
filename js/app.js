@@ -1,5 +1,6 @@
 $(document).ready( function() {
 
+    startSearch();
 
     /* User Interactions */
 	// Call the function getAddress when a character is writes
@@ -7,6 +8,10 @@ $(document).ready( function() {
 		delay(function(){
 			search();
 		}, 200 );
+		
+		if($("header").hasClass("intro")) {
+    		normalSearch();
+		}
 	});
     
     // Role clicked
@@ -298,4 +303,26 @@ function displayError(message) {
     $("section#results").append(html);
 }
 
+
+/*
+ * Display start interface
+ *
+ */
+function startSearch() {
+    $("header").addClass("intro");
+    $("aside").hide();
+    $("#main").hide();
+}
+
+
+/*
+ * Display normal interface
+ *
+ */
+function normalSearch() {
+    $("header").removeClass("intro");
+    $("header").addClass("normal");
+    $("aside").show();
+    $("#main").show();
+}
 
