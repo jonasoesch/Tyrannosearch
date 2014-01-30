@@ -58,6 +58,7 @@ header.normal form {
 header.normal form img.dino {
     float: left;
     margin-left: -65px;
+    cursor: pointer;
 }
 
 header.normal form input {

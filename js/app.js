@@ -62,6 +62,11 @@ $(document).ready( function() {
     $("#results").on("newResult", function(event, data) {
         displayDetails(data.response.docs[0]);
     });
+    
+    $("form").on("click", "img.dino", function(e) {
+        e.preventDefault();
+        restart();
+    });
 
 });
 
@@ -96,6 +101,17 @@ var delay = (function(){
 		timer = setTimeout(callback, ms);
 	};
 })();
+
+
+/*
+ *	Query *:*
+ *	
+ */
+function restart() {
+    $("form input").val("");
+    $("#roles li, aside ul li").removeAttr("data-selected");
+    search();
+}
 
 /*
  * Facet Query
