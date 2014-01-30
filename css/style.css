@@ -16,11 +16,25 @@ body{
     font-weight: 300;
     margin: 0;
     background: #F7F7F7;
-    min-width: 600px;
+    min-width: 920px;
 }
-
+video{
+    width:90%;
+   height:auto;
+   padding-bottom:1em;
+}
+audio{
+    width:90%;
+   padding-bottom:1em;
+}
+#results{
+    padding-bottom: 1em;
+}
 p.small{
     font-weight: 200;
+}
+td.bold{
+    font-weight: 600;
 }
 aside{
     padding-left: 3.33%;
@@ -56,6 +70,7 @@ header.normal form {
 header.normal form img.dino {
     float: left;
     margin-left: -65px;
+    cursor: pointer;
 }
 
 header.normal form input {
@@ -161,8 +176,14 @@ li.img{
 
 #roles {
     padding-left: 0;
+    padding:0;
+    width:100%;
+    list-style:none;
+    margin: auto;
+    text-align:center;
+    margin-left:auto;
+    margin-right:auto;
 }
-
  #roles img {
             max-width: 7%;
             min-width: 30px;
@@ -172,7 +193,8 @@ li.img{
 
           #roles li {
             display: inline;
-            text-align: center;
+            
+            
             
           }
 

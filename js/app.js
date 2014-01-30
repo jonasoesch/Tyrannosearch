@@ -1,7 +1,15 @@
+window.resultsLoading = true;
+window.nbOfResult = 0;
+
 $(document).ready( function() {
+    
+    resultsLoading = false;
     
     // Show start interface
     startSearch();
+
+    //$("header").addClass("normal");
+
 
     /* User Interactions */
     // Call the function getAddress when a character is writes
@@ -54,6 +62,11 @@ $(document).ready( function() {
     $("#results").on("newResult", function(event, data) {
         displayDetails(data.response.docs[0]);
     });
+    
+    $("form").on("click", "img.dino", function(e) {
+        e.preventDefault();
+        restart();
+    });
 
 });
 
@@ -63,6 +76,8 @@ $(document).ready( function() {
  *  New search
  */
 function search() {
+    $("#results").attr("data-page", 1);
+    $(window).scrollTop(0);
     querySolr();
 }
 
@@ -86,6 +101,17 @@ var delay = (function(){
         timer = setTimeout(callback, ms);
     };
 })();
+
+
+/*
+ *	Query *:*
+ *	
+ */
+function restart() {
+    $("form input").val("");
+    $("#roles li, aside ul li").removeAttr("data-selected");
+    search();
+}
 
 /*
  * Facet Query
@@ -140,7 +166,7 @@ function getState() {
 
     var page = $("#results").attr("data-page");
     if(page) {
-        state.page = page;
+        state.page = parseInt(page);
     }
 
     return state;
@@ -155,9 +181,9 @@ function querySolr() {
     var url = "http://localhost:8983/solr/select";
     var request = {};
     
-    var state = getState();
+    resultsLoading = true;
     
-    console.log(state);
+    var state = getState();
     
     var query = "";
     
@@ -181,13 +207,12 @@ function querySolr() {
         query = "*:*";
     }
     
-    console.log(query);
-    
     request['q'] = query;
     request['start'] = (state.page * state.rows) - state.rows;
     request['rows'] = state.rows;
     request['fl'] = "*";
     request['wt'] = "json";
+    request['sort'] = sortQuery(state.roles);
     request['facet'] = "true";
     request['facet.field'] = ["role", "tag", "groupname"];
     request['f.tag.facet.limit'] = "5";
@@ -208,13 +233,48 @@ function querySolr() {
 
             if(state.page == 1) {
                 $("#results").trigger("newResults", data);
-                
-                
+                       
             } else {
+            
+    			nbOfResult = data.response.numFound;
                 $("#results").trigger("moreResults", data);
             }
         }
     });
+}
+
+
+function sortQuery(roles) {
+    var query = "score desc";
+    
+    var media = ['video', 'audio', 'text', 'image'];
+    
+    var aMedia = false;
+    var aCity = false;
+    var aPerson = false;
+    
+    $(roles).each( function(index, role) {
+        if($.inArray(role, media) >= 0) {
+            aMedia = true;
+        }
+        
+        if(role == 'city') {aCity = true;}
+        if(role == 'person') {aPerson = true;}
+    });
+    
+    if(aMedia && !aCity && !aPerson) {
+        query += ", title asc";
+    }
+    
+    if(aCity && !aMedia && !aPerson) {
+        query += ", city.name asc";
+    }
+    
+    if(aPerson && !aCity && !aMedia) {
+        query += ", lastname asc, firstname asc";
+    }
+    
+    return query;
 }
 
 
@@ -225,6 +285,8 @@ function querySolr() {
 function getDocument(id) {
     var url = "http://localhost:8983/solr/select";
     var request = {};
+    
+    resultsLoading = true;
     
     
     if(id == null || id == "") {
@@ -355,6 +417,8 @@ function displayResults(results) {
         var html = Mustache.render(tpl, data);
         $("section#results").append(html);
     });
+    
+    resultsLoading = false;
 }
 
 
@@ -489,9 +553,11 @@ function normalSearch() {
 
 
 function infiniteScrolling() {
-    console.log("scroll");
-    if($(window).scrollTop() == $(document).height() - $(window).height())
+
+    var currentPage = getState().page;
+    if($(window).scrollTop() > ($(document).height() - $(window).height() - 400) && !resultsLoading && (currentPage*10 < nbOfResult))
     {
-        displayResults();
+        $("#results").attr("data-page", currentPage+1);
+        querySolr();
     }
 }
