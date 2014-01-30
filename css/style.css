@@ -24,6 +24,9 @@ body{
 p.small{
     font-weight: 200;
 }
+td.bold{
+    font-weight: 600;
+}
 aside{
     padding-left: 3.33%;
     margin-top:10%;
