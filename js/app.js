@@ -1,7 +1,8 @@
 $(document).ready( function() {
     
     // Show start interface
-    startSearch();
+    //startSearch();
+    $("header").addClass("normal");
 
     /* User Interactions */
 	// Call the function getAddress when a character is writes
@@ -22,7 +23,9 @@ $(document).ready( function() {
     });
     
     // Scroll
-    $("#results").scroll(infiniteScrolling());
+    $(window).scroll( function() {
+        infiniteScrolling();
+    });
 
     // Show the detailed article
     $("#main").on("click", "article:not(.details)", function() {
@@ -312,6 +315,8 @@ function newResults(results) {
     // Remove old results
     $("section#results").children().remove();
     
+    $("#results").attr("data-page", 1);
+    
     displayResults(results);
 }
 
@@ -397,7 +402,7 @@ function displayDetails(result) {
 
 /*
  * Remove details in the interface
- *
+ * @param id
  */
 function hideDetails(id) {
     var article = $("article[id='" + id + "']:not(.details)");
@@ -411,7 +416,7 @@ function hideDetails(id) {
 
 /*
  * Display error message
- *
+ * @param String message
  */
 function displayError(message) {
     $("section#results").children().remove();
@@ -444,10 +449,15 @@ function normalSearch() {
 }
 
 
+/*
+ * Infinite scrolling
+ *
+ */
 function infiniteScrolling() {
-    console.log("scroll");
-    if($(window).scrollTop() == $(document).height() - $(window).height())
+    if($(window).scrollTop() > ($(document).height() - $(window).height() - 400))
     {
         displayResults();
+        var currentPage = $("#results").data("page");
+        $("#results").attr("data-page", currentPage+1);
     }
 }
