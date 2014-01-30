@@ -367,29 +367,65 @@ function displayDetails(result) {
     
     console.log(article);
     
-    var tpl = "<article id='{{id}}' class='{{role}} details'><h1>{{title}}</h1><p>{{body}}</p><p>This is a details view</p></article>";
+    var tpl = "<article id='{{id}}' class='{{role}} details'><h1>{{title}}</h1><p>No template found for this role</p></article>";
     
     // Default values for a result
     var data = {
       id: result.id,
       role: result.role,
       title: result.title,
-      body: result.description
     };
 
     // Display for Person differs
     if(result.role == "person") {
-        data.title = [result.firstname, result.lastname].join(" ");
-        data.body = result.biography;
+        data.name = [result.firstname, result.lastname].join(" ");
+        data.biography = result.biography;
+        data.size = results.size;
+        data.address = result.address;
+        data.foot = result.foot;
+        data.cityName = result['city.name']
+        data.cityCode = result['city.code']
+        data.languages = result.language.join(", ");
+        data.email = result.email;
+        data.hobbies = result.hobby.join(", ");
+
+        tpl = $("#person-tpl").text();
     }
     
-    // City differs too
+    // City 
     if(result.role == "city") {
         data.cityName = result['city.name'];
         data.regionName = result['city.region.name'];
         data.regionCode = result['city.region.code'];
         
-        tpl = "<article id='solr'><h2>{{regionCode}} {{cityName}} ({{regionCode}})</h2><p class='small'>{{regionName}}</p><iframe width='425' height='350' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='https://maps.google.ch/maps?q={{regionCode}},{{cityName}}&amp;hnear={{cityName}},{{regionName}}&amp;output=embed'></iframe><br /><small><a href='https://maps.google.ch/maps?q={{cityName}}&amp;source=embed' style='color:#0000FF;text-align:left;padding:1em;'>Größere Kartenansicht</a></small></article>"
+        tpl = $("#city-tpl").text();
+    }
+
+    
+    // Setting values for all media types
+    if(
+        (result.role == "audio") ||
+        (result.role == "image") ||
+        (result.role == "video") ||
+        (result.role == "text")
+    ) {
+        data.tags = result.tag.join(", ");
+        data.fileformat = result.fileformat.replace("\.", "");
+        data.filesize = result.filesize;
+        data.filename = result.filename;
+        data.copyright = result.copyright;
+    }
+
+    // Sound
+    if(result.role == "audio") {
+        data.duration = result.duration;
+
+        tpl = $("#audio-tpl").text();
+    }
+
+    if(result.role == "image") {
+        data.
+        tpl = $("#image-tpl").text();
     }
     
 
