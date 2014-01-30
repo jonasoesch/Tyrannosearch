@@ -18,6 +18,15 @@ body{
     background: #F7F7F7;
     min-width: 920px;
 }
+video{
+    width:90%;
+   height:auto;
+   padding-bottom:1em;
+}
+audio{
+    width:90%;
+   padding-bottom:1em;
+}
 #results{
     padding-bottom: 1em;
 }

@@ -6,8 +6,8 @@ $(document).ready( function() {
     resultsLoading = false;
     
     // Show start interface
-    startSearch();
-    //$("header").addClass("normal");
+    //startSearch();
+    $("header").addClass("normal");
 
     /* User Interactions */
 	// Call the function getAddress when a character is writes
