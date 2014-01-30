@@ -141,6 +141,11 @@ function getState() {
         }
     });
 
+    var page = $("#results").attr("data-page");
+    if(page) {
+        state.page = page;
+    }
+
     return state;
 }
 
