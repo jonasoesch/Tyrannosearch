@@ -1,8 +1,13 @@
+window.resultsLoading = true;
+window.nbOfResult = 0;
+
 $(document).ready( function() {
     
+    resultsLoading = false;
+    
     // Show start interface
-    //startSearch();
-    $("header").addClass("normal");
+    startSearch();
+    //$("header").addClass("normal");
 
     /* User Interactions */
 	// Call the function getAddress when a character is writes
@@ -66,6 +71,8 @@ $(document).ready( function() {
  *	New search
  */
 function search() {
+    $("#results").attr("data-page", 1);
+    $(window).scrollTop(0);
     querySolr();
 }
 
@@ -143,7 +150,7 @@ function getState() {
 
     var page = $("#results").attr("data-page");
     if(page) {
-        state.page = page;
+        state.page = parseInt(page);
     }
 
     return state;
@@ -158,9 +165,9 @@ function querySolr() {
     var url = "http://localhost:8983/solr/select";
     var request = {};
     
-    var state = getState();
+    resultsLoading = true;
     
-    console.log(state);
+    var state = getState();
     
     var query = "";
     
@@ -183,8 +190,6 @@ function querySolr() {
     if(query == "") {
         query = "*:*";
     }
-    
-    console.log(query);
     
     request['q'] = query;
     request['start'] = (state.page * state.rows) - state.rows;
@@ -211,7 +216,7 @@ function querySolr() {
 
 			if(state.page == 1) {
                 $("#results").trigger("newResults", data);
-    			
+    			nbOfResult = data.response.numFound;
     			
 			} else {
                 $("#results").trigger("moreResults", data);
@@ -228,6 +233,8 @@ function querySolr() {
 function getDocument(id) {
     var url = "http://localhost:8983/solr/select";
     var request = {};
+    
+    resultsLoading = true;
     
     
     if(id == null || id == "") {
@@ -360,6 +367,8 @@ function displayResults(results) {
         var html = Mustache.render(tpl, data);
         $("section#results").append(html);
     });
+    
+    resultsLoading = false;
 }
 
 
@@ -459,10 +468,11 @@ function normalSearch() {
  *
  */
 function infiniteScrolling() {
-    if($(window).scrollTop() > ($(document).height() - $(window).height() - 400))
+    var currentPage = getState().page;
+    if($(window).scrollTop() > ($(document).height() - $(window).height() - 400) && !resultsLoading && (currentPage*10 < nbOfResult))
     {
-        displayResults();
-        var currentPage = $("#results").data("page");
+        
         $("#results").attr("data-page", currentPage+1);
+        querySolr();
     }
 }
