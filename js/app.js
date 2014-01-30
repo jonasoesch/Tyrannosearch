@@ -157,13 +157,13 @@ function getState() {
     
     $('#tags li').each(function(index) {
     if($(this).attr("data-selected") === "true" ) {
-            state.tags.push($(this).text());
+            state.tags.push($(this).data('value'));
         }
     });
 
     $('#groups li').each(function(index) {
         if($(this).attr("data-selected") === "true" ) {
-            state.groups.push($(this).text());
+            state.groups.push($(this).data('value'));
         }
     });
 
@@ -338,7 +338,23 @@ function reloadTotalFound(total) {
  */
 function reloadGroupFacet(results) {
     
-    console.log("Group: "+results);
+    $("#groups").children().remove();
+    
+    tpl = $("#facet-tpl").text();
+    
+    var html = "";
+    
+    for(var i=0; i < results.length; i=i+2) {
+        var data = {
+            facet: 'group',
+            value: results[i],
+            total: results[i+1],
+        };
+        
+        html += Mustache.render(tpl, data);
+    }
+    
+    $("#groups").html(html); 
 }
 
 
@@ -358,7 +374,23 @@ function reloadRoleFacet(results) {
  */
 function reloadTagFacet(results) {
     
-    console.log("Tag: "+results);
+    $("#tags").children().remove();
+    
+    tpl = $("#facet-tpl").text();
+    
+    var html = "";
+    
+    for(var i=0; i < results.length; i=i+2) {
+        var data = {
+            facet: 'tag',
+            value: results[i],
+            total: results[i+1],
+        };
+        
+        html += Mustache.render(tpl, data);
+    }
+    
+    $("#tags").html(html);   
 }
 
 
