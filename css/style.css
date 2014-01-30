@@ -18,7 +18,9 @@ body{
     background: #F7F7F7;
     min-width: 920px;
 }
-
+#results{
+    padding-bottom: 1em;
+}
 p.small{
     font-weight: 200;
 }
@@ -161,8 +163,14 @@ li.img{
 
 #roles {
     padding-left: 0;
+    padding:0;
+    width:100%;
+    list-style:none;
+    margin: auto;
+    text-align:center;
+    margin-left:auto;
+    margin-right:auto;
 }
-
  #roles img {
             max-width: 7%;
             min-width: 30px;
@@ -172,7 +180,8 @@ li.img{
 
           #roles li {
             display: inline;
-            text-align: center;
+            
+            
             
           }
 
