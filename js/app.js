@@ -1,20 +1,19 @@
 $(document).ready( function() {
     
     // Show start interface
-    //startSearch();
-    $("header").addClass("normal");
+    startSearch();
 
     /* User Interactions */
-	// Call the function getAddress when a character is writes
-	$("form").on("keyup", 'input', function() {	
-		delay(function(){
-			search();
-		}, 200 );
-		
-		if($("header").hasClass("intro")) {
-    		normalSearch();
-		}
-	});
+    // Call the function getAddress when a character is writes
+    $("form").on("keyup", 'input', function() { 
+        delay(function(){
+            search();
+        }, 200 );
+        
+        if($("header").hasClass("intro")) {
+            normalSearch();
+        }
+    });
     
     // Role, Tag, Group clicked
     $("#roles, #tags, #groups").on("click", "li", function() {
@@ -23,9 +22,7 @@ $(document).ready( function() {
     });
     
     // Scroll
-    $(window).scroll( function() {
-        infiniteScrolling();
-    });
+    $("#results").scroll(infiniteScrolling());
 
     // Show the detailed article
     $("#main").on("click", "article:not(.details)", function() {
@@ -39,15 +36,15 @@ $(document).ready( function() {
     
     /* ------- System Events -------- */
     $("#results").on("newResults", function(event, data) {
-    	reloadTotalFound(data.response.numFound);
-    	newResults(data.response.docs);
-    	reloadRoleFacet(data.facet_counts.facet_fields.role);
-    	reloadGroupFacet(data.facet_counts.facet_fields.groupname);
-    	reloadTagFacet(data.facet_counts.facet_fields.tag);
-    	if(data.spellcheck != null) {
-        	displaySuggestions(data.spellcheck.suggestions[1]);
-    	}
-    	$("*").on("scroll", infiniteScrolling());
+        reloadTotalFound(data.response.numFound);
+        newResults(data.response.docs);
+        reloadRoleFacet(data.facet_counts.facet_fields.role);
+        reloadGroupFacet(data.facet_counts.facet_fields.groupname);
+        reloadTagFacet(data.facet_counts.facet_fields.tag);
+        if(data.spellcheck != null) {
+            displaySuggestions(data.spellcheck.suggestions[1]);
+        }
+        $("*").on("scroll", infiniteScrolling());
     });
 
     $("#results").on("moreResults", function(event, data) {
@@ -63,7 +60,7 @@ $(document).ready( function() {
 
 
 /*
- *	New search
+ *  New search
  */
 function search() {
     querySolr();
@@ -79,15 +76,15 @@ function toggleSelected(el) {
 }
 
 /*
- *	delay() function is added to jQuery
- *	The goal is to fix a delay
+ *  delay() function is added to jQuery
+ *  The goal is to fix a delay
  */
 var delay = (function(){
-	var timer = 0;
-	return function(callback, ms){
-		clearTimeout (timer);
-		timer = setTimeout(callback, ms);
-	};
+    var timer = 0;
+    return function(callback, ms){
+        clearTimeout (timer);
+        timer = setTimeout(callback, ms);
+    };
 })();
 
 /*
@@ -199,25 +196,25 @@ function querySolr() {
     jQuery.ajaxSettings.traditional = true;
   
     $.ajax({
-		type: "POST",
-		dataType: "json",
-		url: url,
-		data: request,
-		error: function () {
-			displayError("The server doesn't respond.");
-		},
-		success: function (data) {
-			console.log(data);
+        type: "POST",
+        dataType: "json",
+        url: url,
+        data: request,
+        error: function () {
+            displayError("The server doesn't respond.");
+        },
+        success: function (data) {
+            console.log(data);
 
-			if(state.page == 1) {
+            if(state.page == 1) {
                 $("#results").trigger("newResults", data);
-    			
-    			
-			} else {
+                
+                
+            } else {
                 $("#results").trigger("moreResults", data);
-			}
-		}
-	});
+            }
+        }
+    });
 }
 
 
@@ -244,18 +241,18 @@ function getDocument(id) {
     jQuery.ajaxSettings.traditional = true;
   
     $.ajax({
-		type: "POST",
-		dataType: "json",
-		url: url,
-		data: request,
-		error: function () {
-			displayError("The server doesn't respond.");
-		},
-		success: function (data) {
-			console.log(data);
-			$("#results").trigger("newResult", data);
-		}
-	});
+        type: "POST",
+        dataType: "json",
+        url: url,
+        data: request,
+        error: function () {
+            displayError("The server doesn't respond.");
+        },
+        success: function (data) {
+            console.log(data);
+            $("#results").trigger("newResult", data);
+        }
+    });
 }
 
 
@@ -320,8 +317,6 @@ function newResults(results) {
     // Remove old results
     $("section#results").children().remove();
     
-    $("#results").attr("data-page", 1);
-    
     displayResults(results);
 }
 
@@ -377,26 +372,65 @@ function displayDetails(result) {
     
     console.log(article);
     
-    var tpl = "<article id='{{id}}' class='{{role}} details'><h1>{{title}}</h1><p>{{body}}</p></article>";
+    var tpl = "<article id='{{id}}' class='{{role}} details'><h1>{{title}}</h1><p>No template found for this role</p></article>";
     
     // Default values for a result
     var data = {
       id: result.id,
       role: result.role,
       title: result.title,
-      body: result.description
     };
 
     // Display for Person differs
     if(result.role == "person") {
-        data.title = [result.firstname, result.lastname].join(" ");
-        data.body = result.biography;
+        data.name = [result.firstname, result.lastname].join(" ");
+        data.biography = result.biography;
+        data.size = results.size;
+        data.address = result.address;
+        data.foot = result.foot;
+        data.cityName = result['city.name']
+        data.cityCode = result['city.code']
+        data.languages = result.language.join(", ");
+        data.email = result.email;
+        data.hobbies = result.hobby.join(", ");
+
+        tpl = $("#person-tpl").text();
     }
     
-    // City differs too
+    // City 
     if(result.role == "city") {
-        data.title = result['city.name'];
-        data.body = result['city.region.name'];
+        data.cityName = result['city.name'];
+        data.regionName = result['city.region.name'];
+        data.regionCode = result['city.region.code'];
+        
+        tpl = $("#city-tpl").text();
+    }
+
+    
+    // Setting values for all media types
+    if(
+        (result.role == "audio") ||
+        (result.role == "image") ||
+        (result.role == "video") ||
+        (result.role == "text")
+    ) {
+        data.tags = result.tag.join(", ");
+        data.fileformat = result.fileformat.replace("\.", "");
+        data.filesize = result.filesize;
+        data.filename = result.filename;
+        data.copyright = result.copyright;
+    }
+
+    // Sound
+    if(result.role == "audio") {
+        data.duration = result.duration;
+
+        tpl = $("#audio-tpl").text();
+    }
+
+    if(result.role == "image") {
+        data.
+        tpl = $("#image-tpl").text();
     }
     
 
@@ -407,7 +441,7 @@ function displayDetails(result) {
 
 /*
  * Remove details in the interface
- * @param id
+ *
  */
 function hideDetails(id) {
     var article = $("article[id='" + id + "']:not(.details)");
@@ -421,7 +455,7 @@ function hideDetails(id) {
 
 /*
  * Display error message
- * @param String message
+ *
  */
 function displayError(message) {
     $("section#results").children().remove();
@@ -454,15 +488,10 @@ function normalSearch() {
 }
 
 
-/*
- * Infinite scrolling
- *
- */
 function infiniteScrolling() {
-    if($(window).scrollTop() > ($(document).height() - $(window).height() - 400))
+    console.log("scroll");
+    if($(window).scrollTop() == $(document).height() - $(window).height())
     {
         displayResults();
-        var currentPage = $("#results").data("page");
-        $("#results").attr("data-page", currentPage+1);
     }
 }

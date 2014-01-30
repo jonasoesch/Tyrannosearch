@@ -11,7 +11,6 @@
         <link rel="stylesheet" type="text/css" href="css/style.css" /> 
     </head>
     <body>
-
         <header>
             <form>
                 <img class="dino" src="pictos/dinoblackwhite.png" />
@@ -239,5 +238,141 @@
 
             </section>
         </div>
+
+        <script id="person-tpl" type="script/x-mustache-template">
+        <article id="{{id}}" class='{{role}} details'> 
+            <h2>{{name}} {{birthdate}}</h2>
+            <p class="small">{{biography}}</p>
+            <table>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td>Foot:</td>
+                        <td>{{size}} cm</td>
+                    </tr>
+                    <tr>
+                        <td>{{address}}</td>
+                        <td>Size:</td>
+                        <td>{{foot}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{cityCode}} {{cityName}}</td>
+                        <td>languages:</td>
+                        <td>{{languages}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{email}}</td>
+                        <td>Hobbies:</td>
+                        <td>{{hobbies}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </article>
+        </script>
+
+
+        <script id="city-tpl" type="script/x-mustache-template">
+        <article id='{{id}}' class='{{role}} details'>
+            <h2>{{regionCode}} {{cityName}} ({{regionCode}})</h2>
+            <p class='small'>{{regionName}}</p>
+            <iframe 
+                width='425' 
+                height='350' 
+                frameborder='0' 
+                scrolling='no' marginheight='0' marginwidth='0' 
+                src='https://maps.google.ch/maps?q={{regionCode}},{{cityName}}&amp;hnear={{cityName}},{{regionName}}&amp;output=embed'>
+            </iframe><br />
+            <small>
+                <a href='https://maps.google.ch/maps?q={{cityName}}&amp;source=embed' style='color:#0000FF;text-align:left;padding:1em;'>View Map on Google Maps</a>
+            </small>
+        </article>
+        </script>
+
+        <script id="audio-tpl" type="script/x-mustache-template">
+        <article id='{{id}}' class='{{role}} details'>
+            <h2>{{title}}</h2>
+            <p class="small">{{description}}</p>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Language:</td>
+                        <td>Wo chunnt das här??</td>
+                    </tr>
+                    <tr>
+                        <td>Tags:</td>
+                        <td>{{tags}}</td>
+                    </tr>
+                    <tr>
+                        <td>Duration:</td>
+                        <td>{{duration}} s</td>
+                    </tr>
+                    <tr>
+                        <td>Format:</td>
+                        <td>.{{fileformat}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{filesize}} bytes</td>
+                        <td>{{filename}}</td>
+                    </tr>
+                    <tr>
+                        <td>Owner:</td>
+                        <td>{{lastname}}</td>
+                    </tr>
+                    <tr>
+                        <td>Copyright:</td>
+                        <td>{{copyright}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <audio controls>
+                                <source src="{{filename}}" type="audio/{{fileformat}}">
+                                        Your browser does not support the audio element.
+                            </audio>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </article>
+        </script>
+        
+        <script id="image-tpl" type="script/x-mustache-template">
+        <article id='{{id}}' class='{{role}} details'>
+            <h2>{{title}}</h2>
+            <p class="small">{{description}}</p>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Creation:</td>
+                        <td>{{creationDate}}</td>
+                    </tr>
+                    <tr>
+                        <td>Tags:</td>
+                        <td colspan="2">{{tags}}</td>
+                    </tr>
+                    <tr>
+                        <td>Type:</td>
+                        <td>????</td>
+                    </tr>
+                    <tr>
+                        <td>Format:</td>
+                        <td>{{fileformat}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{filesize}} bytes</td>
+                        <td>{{filename}}</td>
+                    </tr>
+                    <tr>
+                        <td>Colors :</td>
+                        <td>{{colors}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <img src="{{filename}}" class="search" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </article>
+        </script>
     </body>
 </html>
