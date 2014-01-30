@@ -143,7 +143,7 @@ ul{
 
 li{
     
-    display:inline-block;
+   
     margin:1em;
         
 }
@@ -165,14 +165,7 @@ li.group{
      cursor: pointer;
 }
 
-li.img{
-  
-    max-width: 9.99%;
-    height: auto;
-  
-    
-    
-}
+
 
 #roles {
     padding-left: 0;
@@ -191,12 +184,7 @@ li.img{
             
           }
 
-          #roles li {
-            display: inline;
-            
-            
-            
-          }
+         
 
           @media screen and (max-width: 400px) {
             aside {
@@ -232,6 +220,76 @@ iframe{
    display: table;
     margin: auto;
     margin-top: 1em;
+}
+
+form img[data-selected="true"]{
+
+}
+#city{
+    display: inline-block;
+    width: 40px;
+    height:40px ;
+    background-image: url('../pictos/city.png');
+    background-size:40px 40px;
+     cursor: pointer;
+}
+#city[data-selected="true"]{
+   background-image: url('../pictos/cityselected.png'); 
+}
+#audio{
+    display: inline-block;
+    width: 40px;
+    height:40px ;
+    background-image: url('../pictos/audio.png');
+    background-size:40px 40px;
+     cursor: pointer;
+}
+#audio[data-selected="true"]{
+   background-image: url('../pictos/audioselected.png'); 
+}
+#image{
+    display: inline-block;
+    width: 40px;
+    height:40px ;
+    background-image: url('../pictos/image.png');
+    background-size:40px 40px;
+     cursor: pointer;
+}
+#image[data-selected="true"]{
+   background-image: url('../pictos/imageselected.png'); 
+}
+#text{
+    display: inline-block;
+    width: 40px;
+    height:40px ;
+    background-image: url('../pictos/text.png');
+    background-size:40px 40px;
+     cursor: pointer;
+}
+#text[data-selected="true"]{
+   background-image: url('../pictos/textselected.png'); 
+}
+#video{
+    display: inline-block;
+    width: 40px;
+    height:40px ;
+    background-image: url('../pictos/video.png');
+    background-size:40px 40px;
+     cursor: pointer;
+}
+#video[data-selected="true"]{
+   background-image: url('../pictos/videoselected.png'); 
+}
+#person{
+    display: inline-block;
+    width: 40px;
+    height:40px ;
+    background-image: url('../pictos/person.png');
+    background-size:40px 40px;
+     cursor: pointer;
+}
+#person[data-selected="true"]{
+   background-image: url('../pictos/personselected.png'); 
 }
 
 [data-selected="true"] {
