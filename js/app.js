@@ -448,6 +448,8 @@ function displayResults(results) {
             data.body = result['city.region.name'];
         }
         
+        data.title = (data.title) ? data.title : result.filename;
+        data.body = (data.body) ? data.body : result.tag.join(", ");
 
         var html = Mustache.render(tpl, data);
         $("section#results").append(html);
@@ -477,8 +479,10 @@ function displayDetails(result) {
     var data = {
       id: result.id,
       role: result.role,
-      title: result.title,
+      title: result.title
     };
+    
+    
 
     // Display for Person differs
     if(result.role == "person") {
@@ -493,8 +497,6 @@ function displayDetails(result) {
         data.email = result.email;
         data.hobbies = result.hobby.join(", ");
         
-        var filename = data.filename.contains(".") ? data.filename : data.filename+"."+data.fileformat;
-        data.url = ["http://comem.trucmu.ch/mrm/medias", data.groupname, result.role, result.filename].join("/");
 
         tpl = $("#person-tpl").text();
     }
@@ -516,12 +518,20 @@ function displayDetails(result) {
         (result.role == "video") ||
         (result.role == "text")
     ) {
-        data.tags = result.tag.join(", ");
-        data.fileformat = result.fileformat.replace("\.", "");
+        data.tags = result.tag ? result.tag.join(", ") : "";
+        data.fileformat = result.fileformat ? result.fileformat.replace("\.", "") : "";
         data.filesize = result.filesize;
         data.filename = result.filename;
         data.copyright = result.copyright;
         data.creationDate = result.creationDate;
+        
+       var filename = result.filename;
+       if(filename.indexOf(".") < 0){
+	       filename = filename + "." + data.fileformat;
+       } 
+        
+        data.url = ["http://comem.trucmu.ch/mrm/medias", result.groupname, result.role, filename].join("/");
+        console.log(data);
 
     }
 
@@ -534,10 +544,24 @@ function displayDetails(result) {
 
 	// Image
     if(result.role == "image") {
+    	
+    	data.title = (data.title) ?  data.title : result.filename;
+    	
         tpl = $("#image-tpl").text();
     }
     
+    //Text
+    if(result.role == "text") {
+    	
+        tpl = $("#text-tpl").text();
+    }
 
+
+	//Video
+    if(result.role == "video") {
+    	
+        tpl = $("#video-tpl").text();
+    }
     var html = Mustache.render(tpl, data);
     $(article).after(html);
 }
