@@ -457,6 +457,9 @@ function displayDetails(result) {
         data.languages = result.language.join(", ");
         data.email = result.email;
         data.hobbies = result.hobby.join(", ");
+        
+        var filename = data.filename.contains(".") ? data.filename : data.filename+"."+data.fileformat;
+        data.url = ["http://comem.trucmu.ch/mrm/medias", data.groupname, result.role, result.filename].join("/");
 
         tpl = $("#person-tpl").text();
     }
@@ -483,6 +486,8 @@ function displayDetails(result) {
         data.filesize = result.filesize;
         data.filename = result.filename;
         data.copyright = result.copyright;
+        data.creationDate = result.creationDate;
+
     }
 
     // Sound
@@ -492,8 +497,8 @@ function displayDetails(result) {
         tpl = $("#audio-tpl").text();
     }
 
+	// Image
     if(result.role == "image") {
-        data.
         tpl = $("#image-tpl").text();
     }
     
