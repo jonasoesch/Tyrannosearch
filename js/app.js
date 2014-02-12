@@ -1,57 +1,8 @@
-// @codekit-append "_request.js"
-window.resultsLoading = true;
-window.nbOfResult = 0;
-
 /*
- * Display results in the interface
- *
- */
-function displayResults(results) {
-
-    var tpl = "<article id='{{id}}' class='{{role}}'><h1>{{title}}</h1><p>{{body}}</p></article>";
-      
-      $(results).each( function(index, result) {
-        
-        // Default values for a result
-        var data = {
-          id: result.id,
-          role: result.role,
-          title: result.title,
-          body: result.description
-        };
- 
-        // Display for Person differs
-        if(result.role === "person") {
-            data.title = [result.firstname, result.lastname].join(" ");
-            data.body = result.biography;
-        }
-        
-        // City differs too
-        if(result.role === "city") {
-            data.title = result['city.name'];
-            data.body = result['city.region.name'];
-        }
-        
-        data.title = (data.title) ? data.title : result.filename;
-        data.body = (data.body) ? data.body : result.tag.join(", ");
-
-        var html = Mustache.render(tpl, data);
-        $("section#results").append(html);
-    });
-    
-    window.resultsLoading = false;
-}
-
-/*
- * Display error message
- *
- */
-function displayError(message) {
-    $("section#results").children().remove();
-    if(message === null) {message = "There was a problem.";}
-    var html = '<span id="error">'+ message +'</span>';
-    $("section#results").append(html);
-}
+This function loads the state of the user interface
+from the data-* attributes.
+It returns
+*/
 
 function getState() {
     var state =
@@ -96,7 +47,68 @@ function getState() {
     return state;
 }
 
+/* **********************************************
+     Begin _displayResults.js
+********************************************** */
 
+/*
+ * Display results in the interface
+ *
+ */
+function displayResults(results) {
+
+    var tpl = "<article id='{{id}}' class='{{role}}'><h1>{{title}}</h1><p>{{body}}</p></article>";
+      
+      $(results).each( function(index, result) {
+        
+        // Default values for a result
+        var data = {
+          id: result.id,
+          role: result.role,
+          title: result.title,
+          body: result.description
+        };
+ 
+        // Display for Person differs
+        if(result.role === "person") {
+            data.title = [result.firstname, result.lastname].join(" ");
+            data.body = result.biography;
+        }
+        
+        // City differs too
+        if(result.role === "city") {
+            data.title = result['city.name'];
+            data.body = result['city.region.name'];
+        }
+        
+        data.title = (data.title) ? data.title : result.filename;
+        data.body = (data.body) ? data.body : result.tag.join(", ");
+
+        var html = Mustache.render(tpl, data);
+        $("section#results").append(html);
+    });
+    
+    window.resultsLoading = false;
+}
+
+/* **********************************************
+     Begin _displayError.js
+********************************************** */
+
+/*
+ * Display error message
+ *
+ */
+function displayError(message) {
+    $("section#results").children().remove();
+    if(message === null) {message = "There was a problem.";}
+    var html = '<span id="error">'+ message +'</span>';
+    $("section#results").append(html);
+}
+
+/* **********************************************
+     Begin _sortQuery.js
+********************************************** */
 
 function sortQuery(roles) {
     var query = "score desc";
@@ -131,6 +143,9 @@ function sortQuery(roles) {
     return query;
 }
 
+/* **********************************************
+     Begin _facetQuery.js
+********************************************** */
 
 /*
  * Facet Query
@@ -148,6 +163,10 @@ function facetQuery(field, values) {
     query += ")";
     return query;
 }
+
+/* **********************************************
+     Begin _querySolr.js
+********************************************** */
 
 /*
  * Get documents in Solr
@@ -218,9 +237,6 @@ function querySolr() {
     });
 }
 
-
-
-
 /*
  *  New search
  */
@@ -230,42 +246,9 @@ function search() {
     querySolr();
 }
 
-
-/*
- *	Toggle data-selected
- */
-function toggleSelected(el) {
-    if(el.attr("data-selected") === "true") {
-        el.attr("data-selected", false);
-    } else {
-        el.attr("data-selected", true);
-    }
-}
-
-/*
- *  delay() function is added to jQuery
- *  The goal is to fix a delay
- */
-var delay = (function(){
-    var timer = 0;
-    return function(callback, ms){
-        clearTimeout (timer);
-        timer = setTimeout(callback, ms);
-    };
-})();
-
-
-/*
- *	Query *:*
- *	
- */
-function restart() {
-    $("form input").val("");
-    $("#roles li, aside ul li").removeAttr("data-selected");
-    search();
-}
-
-
+/* **********************************************
+     Begin _getDocument.js
+********************************************** */
 
 /*
  * Get a document in Solr
@@ -306,13 +289,15 @@ function getDocument(id) {
     });
 }
 
+/* **********************************************
+     Begin _reloadFacets.js
+********************************************** */
 
 /*
  * Reload total found documents
  *
  */
 function reloadTotalFound(total) {
-    
     console.log("Total found: "+total);
 }
 
@@ -379,33 +364,9 @@ function reloadTagFacet(results) {
     $("#tags").html(html);
 }
 
-
-/*
- * Display suggestions
- *
- */
-function displaySuggestions(suggestions) {
-    if(suggestions !== null) {
-        console.log("Suggestions: "+suggestions.suggestion);
-    }
-}
-
-
-/*
- * Add new results to the interface
- *
- */
-function newResults(results) {
-    
-    // Remove old results
-    $("section#results").children().remove();
-    
-    displayResults(results);
-}
-
-
-
-
+/* **********************************************
+     Begin _detailView.js
+********************************************** */
 
 /*
  * Display details in the interface
@@ -467,7 +428,7 @@ function displayDetails(result) {
         (result.role === "text")
     ) {
         data.tags = result.tag ? result.tag.join(", ") : "";
-        data.fileformat = result.fileformat ? result.fileformat.replace("\.", "") : "";
+        data.fileformat = result.fileformat ? result.fileformat.replace(".", "") : "";
         data.filesize = result.filesize;
         data.filename = result.filename;
         data.copyright = result.copyright;
@@ -524,7 +485,9 @@ function hideDetails(id) {
 }
 
 
-
+/* **********************************************
+     Begin _prepareInterface.js
+********************************************** */
 
 
 /*
@@ -549,6 +512,85 @@ function normalSearch() {
     $("#main").show();
 }
 
+/* **********************************************
+     Begin _app.js
+********************************************** */
+
+// @codekit-prepend "_getState.js"
+// @codekit-prepend "_displayResults.js"
+// @codekit-prepend "_displayError.js"
+// @codekit-prepend "_sortQuery.js"
+// @codekit-prepend "_facetQuery.js"
+// @codekit-prepend "_querySolr.js"
+// @codekit-prepend "_getDocument.js"
+// @codekit-prepend "_reloadFacets.js"
+// @codekit-prepend "_detailView.js"
+// @codekit-prepend "_prepareInterface.js"
+
+
+window.resultsLoading = true;
+window.nbOfResult = 0;
+
+
+/*
+ *	Toggle data-selected
+ */
+function toggleSelected(el) {
+    if(el.attr("data-selected") === "true") {
+        el.attr("data-selected", false);
+    } else {
+        el.attr("data-selected", true);
+    }
+}
+
+/*
+ *  delay() function is added to jQuery
+ *  The goal is to fix a delay
+ */
+var delay = (function(){
+    var timer = 0;
+    return function(callback, ms){
+        clearTimeout (timer);
+        timer = setTimeout(callback, ms);
+    };
+})();
+
+
+/*
+ *	Query *:*
+ *	
+ */
+function restart() {
+    $("form input").val("");
+    $("#roles li, aside ul li").removeAttr("data-selected");
+    search();
+}
+
+
+/*
+ * Display suggestions
+ *
+ */
+function displaySuggestions(suggestions) {
+    if(suggestions !== null) {
+        console.log("Suggestions: "+suggestions.suggestion);
+    }
+}
+
+
+/*
+ * Add new results to the interface
+ *
+ */
+function newResults(results) {
+    
+    // Remove old results
+    $("section#results").children().remove();
+    
+    displayResults(results);
+}
+
+
 
 function infiniteScrolling() {
 
@@ -564,7 +606,7 @@ $(document).ready( function() {
     
     window.resultsLoading = false;
     
-    // Show start interface
+    // Initalize the search
     startSearch();
 
     //$("header").addClass("normal");
@@ -628,15 +670,3 @@ $(document).ready( function() {
     });
 
 });
-
-
-/* **********************************************
-     Begin _request.js
-********************************************** */
-
-
-
-/* **********************************************
-     Begin _request.js
-********************************************** */
-
