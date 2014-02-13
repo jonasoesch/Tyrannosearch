@@ -321,3 +321,18 @@ header.intro input {
     max-width: 40%;
     min-width: 300px;
 }
+
+
+.city, .audio, .image, .text, .video, .person {
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    background-position: 97% 15px;
+}
+
+
+.city {background-image: url("../pictos/cityselected.png");}
+.audio {background-image: url("../pictos/audioselected.png");}
+.image {background-image: url("../pictos/imageselected.png");}
+.text {background-image: url("../pictos/textselected.png");}
+.video {background-image: url("../pictos/videoselected.png");}
+.person {background-image: url("../pictos/personselected.png");}
