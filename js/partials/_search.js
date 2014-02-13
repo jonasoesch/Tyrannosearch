@@ -1,3 +1,55 @@
+function sortQuery(roles) {
+    var query = "score desc";
+    
+    var media = ['video', 'audio', 'text', 'image'];
+    
+    var aMedia = false;
+    var aCity = false;
+    var aPerson = false;
+    
+    $(roles).each( function(index, role) {
+        if($.inArray(role, media) >= 0) {
+            aMedia = true;
+        }
+        
+        if(role === 'city') {aCity = true;}
+        if(role === 'person') {aPerson = true;}
+    });
+    
+    if(aMedia && !aCity && !aPerson) {
+        query += ", title asc";
+    }
+    
+    if(aCity && !aMedia && !aPerson) {
+        query += ", city.name asc";
+    }
+    
+    if(aPerson && !aCity && !aMedia) {
+        query += ", lastname asc, firstname asc";
+    }
+    
+    return query;
+}
+
+
+/*
+ * Facet Query
+ * @param field = the name of the facet field
+ * @param values = value of field to restrict query
+ */
+function facetQuery(field, values) {
+    var query = "";
+    query += " +"+ field +":(";
+    
+    $(values).each( function(index, value) {
+        query += value + " ";
+    });
+    
+    query += ")";
+    return query;
+}
+
+
 /*
  * Get documents in Solr
  *
@@ -9,6 +61,7 @@ function querySolr() {
     window.resultsLoading = true;
     
     var state = getState();
+    console.log(state);
     
     var query = "";
     
@@ -42,6 +95,7 @@ function querySolr() {
     request['facet.field'] = ["role", "tag", "groupname"];
     request['f.tag.facet.limit'] = "5";
     request.spellcheck = "true";
+
     
     jQuery.ajaxSettings.traditional = true;
   

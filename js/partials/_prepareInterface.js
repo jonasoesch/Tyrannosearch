@@ -1,4 +1,3 @@
-
 /*
  * Display start interface
  *
@@ -19,4 +18,15 @@ function normalSearch() {
     $("header").addClass("normal");
     $("aside").show();
     $("#main").show();
+}
+
+function prepareInterface() {
+
+	var header = $("header");
+
+	if(header.hasClass("intro")) {
+		normalSearch();
+	} else if (!header.hasClass("normal")) {
+		startSearch();
+	}
 }

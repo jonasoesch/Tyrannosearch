@@ -26,6 +26,7 @@ function reloadGroupFacet(results) {
             value: results[i],
             total: results[i+1],
         };
+
         
         html += Mustache.render(tpl, data);
     }
@@ -55,16 +56,27 @@ function reloadTagFacet(results) {
     var tpl = $("#facet-tpl").text();
     
     var html = "";
+
+    //var selected = $("#tags[data-selected='true']");
     
     for(var i=0; i < results.length; i=i+2) {
         var data = {
             facet: 'tag',
             value: results[i],
             total: results[i+1],
+            selected: false
         };
         
         html += Mustache.render(tpl, data);
     }
     
     $("#tags").html(html);
+}
+
+
+function reloadFacets(data) {
+        reloadTotalFound(data.response.numFound);
+        reloadRoleFacet(data.facet_counts.facet_fields.role);
+        reloadGroupFacet(data.facet_counts.facet_fields.groupname);
+        reloadTagFacet(data.facet_counts.facet_fields.tag);
 }

@@ -82,7 +82,8 @@ function displayResults(results) {
         }
         
         data.title = (data.title) ? data.title : result.filename;
-        data.body = (data.body) ? data.body : result.tag.join(", ");
+        //data.body = (data.body) ? data.body : result.tag.join(", ");
+
 
         var html = Mustache.render(tpl, data);
         $("section#results").append(html);
@@ -107,7 +108,7 @@ function displayError(message) {
 }
 
 /* **********************************************
-     Begin _sortQuery.js
+     Begin _search.js
 ********************************************** */
 
 function sortQuery(roles) {
@@ -143,9 +144,6 @@ function sortQuery(roles) {
     return query;
 }
 
-/* **********************************************
-     Begin _facetQuery.js
-********************************************** */
 
 /*
  * Facet Query
@@ -164,9 +162,6 @@ function facetQuery(field, values) {
     return query;
 }
 
-/* **********************************************
-     Begin _querySolr.js
-********************************************** */
 
 /*
  * Get documents in Solr
@@ -179,6 +174,7 @@ function querySolr() {
     window.resultsLoading = true;
     
     var state = getState();
+    console.log(state);
     
     var query = "";
     
@@ -212,6 +208,7 @@ function querySolr() {
     request['facet.field'] = ["role", "tag", "groupname"];
     request['f.tag.facet.limit'] = "5";
     request.spellcheck = "true";
+
     
     jQuery.ajaxSettings.traditional = true;
   
@@ -321,6 +318,7 @@ function reloadGroupFacet(results) {
             value: results[i],
             total: results[i+1],
         };
+
         
         html += Mustache.render(tpl, data);
     }
@@ -350,18 +348,29 @@ function reloadTagFacet(results) {
     var tpl = $("#facet-tpl").text();
     
     var html = "";
+
+    //var selected = $("#tags[data-selected='true']");
     
     for(var i=0; i < results.length; i=i+2) {
         var data = {
             facet: 'tag',
             value: results[i],
             total: results[i+1],
+            selected: false
         };
         
         html += Mustache.render(tpl, data);
     }
     
     $("#tags").html(html);
+}
+
+
+function reloadFacets(data) {
+        reloadTotalFound(data.response.numFound);
+        reloadRoleFacet(data.facet_counts.facet_fields.role);
+        reloadGroupFacet(data.facet_counts.facet_fields.groupname);
+        reloadTagFacet(data.facet_counts.facet_fields.tag);
 }
 
 /* **********************************************
@@ -489,7 +498,6 @@ function hideDetails(id) {
      Begin _prepareInterface.js
 ********************************************** */
 
-
 /*
  * Display start interface
  *
@@ -512,25 +520,36 @@ function normalSearch() {
     $("#main").show();
 }
 
+function prepareInterface() {
+
+	var header = $("header");
+
+	if(header.hasClass("intro")) {
+		normalSearch();
+	} else if (!header.hasClass("normal")) {
+		startSearch();
+	}
+}
+
 /* **********************************************
-     Begin _app.js
+     Begin _infiniteScrolling.js
 ********************************************** */
 
-// @codekit-prepend "_getState.js"
-// @codekit-prepend "_displayResults.js"
-// @codekit-prepend "_displayError.js"
-// @codekit-prepend "_sortQuery.js"
-// @codekit-prepend "_facetQuery.js"
-// @codekit-prepend "_querySolr.js"
-// @codekit-prepend "_getDocument.js"
-// @codekit-prepend "_reloadFacets.js"
-// @codekit-prepend "_detailView.js"
-// @codekit-prepend "_prepareInterface.js"
+function infiniteScrolling() {
+	
+	console.log("--scroll----");
+    var currentPage = getState().page;
+    if($(window).scrollTop() > ($(document).height() - $(window).height() - 400) && !window.resultsLoading && (currentPage*10 < window.nbOfResult))
+    {
 
+        $("#results").attr("data-page", currentPage+1);
+        search();
+    }
+}
 
-window.resultsLoading = true;
-window.nbOfResult = 0;
-
+/* **********************************************
+     Begin _toggleSelected.js
+********************************************** */
 
 /*
  *	Toggle data-selected
@@ -542,6 +561,59 @@ function toggleSelected(el) {
         el.attr("data-selected", true);
     }
 }
+
+/* **********************************************
+     Begin _restart.js
+********************************************** */
+
+/*
+ *	Query *:*
+ *	
+ */
+function restart() {
+    $("form input").val("");
+    $("#roles li, aside ul li").removeAttr("data-selected");
+    search();
+}
+
+/* **********************************************
+     Begin _newResults.js
+********************************************** */
+
+/*
+ * Add new results to the interface
+ *
+ */
+function newResults(results) {
+    
+    // Remove old results
+    $("section#results").children().remove();
+    
+    displayResults(results);
+}
+
+/* **********************************************
+     Begin _app.js
+********************************************** */
+
+// @codekit-prepend "_getState.js"
+// @codekit-prepend "_displayResults.js"
+// @codekit-prepend "_displayError.js"
+// @codekit-prepend "_search.js"
+// @codekit-prepend "_getDocument.js"
+// @codekit-prepend "_reloadFacets.js"
+// @codekit-prepend "_detailView.js"
+// @codekit-prepend "_prepareInterface.js"
+// @codekit-prepend "_infiniteScrolling.js"
+// @codekit-prepend "_toggleSelected.js"
+// @codekit-prepend "_restart.js"
+// @codekit-prepend "_newResults.js"
+
+
+
+window.resultsLoading = true;
+window.nbOfResult = 0;
+
 
 /*
  *  delay() function is added to jQuery
@@ -556,117 +628,77 @@ var delay = (function(){
 })();
 
 
-/*
- *	Query *:*
- *	
- */
-function restart() {
-    $("form input").val("");
-    $("#roles li, aside ul li").removeAttr("data-selected");
-    search();
-}
 
 
-/*
- * Display suggestions
- *
- */
-function displaySuggestions(suggestions) {
-    if(suggestions !== null) {
-        console.log("Suggestions: "+suggestions.suggestion);
-    }
-}
-
-
-/*
- * Add new results to the interface
- *
- */
-function newResults(results) {
-    
-    // Remove old results
-    $("section#results").children().remove();
-    
-    displayResults(results);
-}
-
-
-
-function infiniteScrolling() {
-
-    var currentPage = getState().page;
-    if($(window).scrollTop() > ($(document).height() - $(window).height() - 400) && !window.resultsLoading && (currentPage*10 < window.nbOfResult))
-    {
-        $("#results").attr("data-page", currentPage+1);
-        querySolr();
-    }
-}
 
 $(document).ready( function() {
     
+    // Initialize the interface
     window.resultsLoading = false;
+    prepareInterface();
+
+    /* ------------ User Interactions ---------------- */
     
-    // Initalize the search
-    startSearch();
 
-    //$("header").addClass("normal");
-
-
-    /* User Interactions */
-    // Call the function getAddress when a character is writes
+    // When the user types, after a short delay display results
     $("form").on("keyup", 'input', function() {
             delay(function(){
             search();
         }, 200 );
         
-        if($("header").hasClass("intro")) {
-            normalSearch();
-        }
+        prepareInterface();
     });
     
-    // Role, Tag, Group clicked
+    // Role, Tag, Group clicked, reload the results with the new criteria
     $("#roles, #tags, #groups").on("click", "li", function() {
         toggleSelected($(this));
         search();
     });
     
-    // Scroll
-    $("#results").scroll(infiniteScrolling());
+    // When the users scrolls, load more results when he arrives at the bottom
+    $("#results").scroll(
+        infiniteScrolling()
+    );
 
-    // Show the detailed article
+    // When the user clicks on a search result show a detailed view
     $("#main").on("click", "article:not(.details)", function() {
         getDocument($(this).attr("id"));
     });
     
-    // Hide the detailed article
+    // When the user clicks on a detail view, reduce it again
     $("#main").on("click", "article.details", function() {
         hideDetails($(this).attr("id"));
     });
     
-    /* ------- System Events -------- */
-    $("#results").on("newResults", function(event, data) {
-        reloadTotalFound(data.response.numFound);
-        newResults(data.response.docs);
-        reloadRoleFacet(data.facet_counts.facet_fields.role);
-        reloadGroupFacet(data.facet_counts.facet_fields.groupname);
-        reloadTagFacet(data.facet_counts.facet_fields.tag);
-        if(data.spellcheck !== null) {
-            displaySuggestions(data.spellcheck.suggestions[1]);
-        }
-        $("*").on("scroll", infiniteScrolling());
-    });
-
-    $("#results").on("moreResults", function(event, data) {
-        displayResults(data.response.docs);
-    });
-    
-    $("#results").on("newResult", function(event, data) {
-        displayDetails(data.response.docs[0]);
-    });
     
     $("form").on("click", "img.dino", function(e) {
         e.preventDefault();
         restart();
     });
 
+    $("form").on("submit", function(e) {e.preventDefault(); });
+
+
+
+    /* ------- System Events -------- */
+
+    // When we receive new results from the server, update the user interface
+    $("#results").on("newResults", function(event, data) {
+        newResults(data.response.docs);
+        reloadFacets(data);
+        $("*").on("scroll", infiniteScrolling());
+    });
+
+    // When infinite scrolling asks for more results. Append them.
+    $("#results").on("moreResults", function(event, data) {
+        displayResults(data.response.docs);
+    });
+    
+    // Display detailed data when we have received it
+    $("#results").on("newResult", function(event, data) {
+        displayDetails(data.response.docs[0]);
+    });
+    
+
 });
+

@@ -29,7 +29,8 @@ function displayResults(results) {
         }
         
         data.title = (data.title) ? data.title : result.filename;
-        data.body = (data.body) ? data.body : result.tag.join(", ");
+        //data.body = (data.body) ? data.body : result.tag.join(", ");
+
 
         var html = Mustache.render(tpl, data);
         $("section#results").append(html);
