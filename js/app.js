@@ -342,19 +342,19 @@ function reloadRoleFacet(results) {
 }
 
 
+
+
 /*
  * Reload Tag facet
  *
  */
 function reloadTagFacet(results) {
-    
-    $("#tags").children().remove();
-    
+
     var tpl = $("#facet-tpl").text();
     
     var html = "";
 
-    //var selected = $("#tags[data-selected='true']");
+    var tags = getState().tags;
     
     for(var i=0; i < results.length; i=i+2) {
         var data = {
@@ -363,10 +363,15 @@ function reloadTagFacet(results) {
             total: results[i+1],
             selected: false
         };
-        
+
+        if (tags.indexOf(data.value) > -1) {
+            data.selected = true;
+        }
+
         html += Mustache.render(tpl, data);
     }
     
+    $("#tags").children().remove();
     $("#tags").html(html);
 }
 
@@ -599,7 +604,6 @@ function newResults(results) {
     
     // Remove old results
     $("section#results").children().remove();
-    
     displayResults(results);
 }
 
