@@ -222,12 +222,12 @@ function querySolr() {
         },
         success: function (data) {
             console.log(data);
+            window.nbOfResult = data.response.numFound;
 
             if(state.page === 1) {
                 $("#results").trigger("newResults", data);
                        
             } else {
-                window.nbOfResult = data.response.numFound;
                 $("#results").trigger("moreResults", data);
             }
         }
@@ -237,9 +237,14 @@ function querySolr() {
 /*
  *  New search
  */
-function search() {
-    $("#results").attr("data-page", 1);
-    $(window).scrollTop(0);
+function search(page) {
+    page = (page === null) ? 1 : page;
+
+    $("#results").attr("data-page", page);
+    
+    if(page === 1) {
+        $(window).scrollTop(0);
+    }
     querySolr();
 }
 
@@ -537,13 +542,19 @@ function prepareInterface() {
 
 function infiniteScrolling() {
 	
-	console.log("--scroll----");
-    var currentPage = getState().page;
-    if($(window).scrollTop() > ($(document).height() - $(window).height() - 400) && !window.resultsLoading && (currentPage*10 < window.nbOfResult))
-    {
+	var currentPage, pointOfNoReturn;
 
-        $("#results").attr("data-page", currentPage+1);
-        search();
+	pointOfNoReturn = ($(document).height() - $(window).height() - 400);
+	currentPage = getState().page;
+
+    if(
+		($(window).scrollTop() > pointOfNoReturn) &&
+		(!window.resultsLoading) &&
+		(currentPage*10 < window.nbOfResult)
+    )
+    {
+		console.log("End of page");
+        search(currentPage+1);
     }
 }
 
@@ -615,6 +626,8 @@ window.resultsLoading = true;
 window.nbOfResult = 0;
 
 
+
+
 /*
  *  delay() function is added to jQuery
  *  The goal is to fix a delay
@@ -643,7 +656,7 @@ $(document).ready( function() {
     // When the user types, after a short delay display results
     $("form").on("keyup", 'input', function() {
             delay(function(){
-            search();
+            search(1);
         }, 200 );
         
         prepareInterface();
@@ -652,13 +665,13 @@ $(document).ready( function() {
     // Role, Tag, Group clicked, reload the results with the new criteria
     $("#roles, #tags, #groups").on("click", "li", function() {
         toggleSelected($(this));
-        search();
+        search(1);
     });
     
     // When the users scrolls, load more results when he arrives at the bottom
-    $("#results").scroll(
-        infiniteScrolling()
-    );
+    window.onscroll = function() {
+        infiniteScrolling();
+    };
 
     // When the user clicks on a search result show a detailed view
     $("#main").on("click", "article:not(.details)", function() {
@@ -686,7 +699,6 @@ $(document).ready( function() {
     $("#results").on("newResults", function(event, data) {
         newResults(data.response.docs);
         reloadFacets(data);
-        $("*").on("scroll", infiniteScrolling());
     });
 
     // When infinite scrolling asks for more results. Append them.

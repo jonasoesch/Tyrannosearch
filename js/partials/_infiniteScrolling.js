@@ -1,11 +1,17 @@
 function infiniteScrolling() {
 	
-	console.log("--scroll----");
-    var currentPage = getState().page;
-    if($(window).scrollTop() > ($(document).height() - $(window).height() - 400) && !window.resultsLoading && (currentPage*10 < window.nbOfResult))
-    {
+	var currentPage, pointOfNoReturn;
 
-        $("#results").attr("data-page", currentPage+1);
-        search();
+	pointOfNoReturn = ($(document).height() - $(window).height() - 400);
+	currentPage = getState().page;
+
+    if(
+		($(window).scrollTop() > pointOfNoReturn) &&
+		(!window.resultsLoading) &&
+		(currentPage*10 < window.nbOfResult)
+    )
+    {
+		console.log("End of page");
+        search(currentPage+1);
     }
 }

@@ -17,6 +17,8 @@ window.resultsLoading = true;
 window.nbOfResult = 0;
 
 
+
+
 /*
  *  delay() function is added to jQuery
  *  The goal is to fix a delay
@@ -45,7 +47,7 @@ $(document).ready( function() {
     // When the user types, after a short delay display results
     $("form").on("keyup", 'input', function() {
             delay(function(){
-            search();
+            search(1);
         }, 200 );
         
         prepareInterface();
@@ -54,13 +56,13 @@ $(document).ready( function() {
     // Role, Tag, Group clicked, reload the results with the new criteria
     $("#roles, #tags, #groups").on("click", "li", function() {
         toggleSelected($(this));
-        search();
+        search(1);
     });
     
     // When the users scrolls, load more results when he arrives at the bottom
-    $("#results").scroll(
-        infiniteScrolling()
-    );
+    window.onscroll = function() {
+        infiniteScrolling();
+    };
 
     // When the user clicks on a search result show a detailed view
     $("#main").on("click", "article:not(.details)", function() {
@@ -88,7 +90,6 @@ $(document).ready( function() {
     $("#results").on("newResults", function(event, data) {
         newResults(data.response.docs);
         reloadFacets(data);
-        $("*").on("scroll", infiniteScrolling());
     });
 
     // When infinite scrolling asks for more results. Append them.

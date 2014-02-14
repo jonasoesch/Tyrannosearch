@@ -109,12 +109,12 @@ function querySolr() {
         },
         success: function (data) {
             console.log(data);
+            window.nbOfResult = data.response.numFound;
 
             if(state.page === 1) {
                 $("#results").trigger("newResults", data);
                        
             } else {
-                window.nbOfResult = data.response.numFound;
                 $("#results").trigger("moreResults", data);
             }
         }
@@ -124,8 +124,13 @@ function querySolr() {
 /*
  *  New search
  */
-function search() {
-    $("#results").attr("data-page", 1);
-    $(window).scrollTop(0);
+function search(page) {
+    page = (page === null) ? 1 : page;
+
+    $("#results").attr("data-page", page);
+    
+    if(page === 1) {
+        $(window).scrollTop(0);
+    }
     querySolr();
 }
