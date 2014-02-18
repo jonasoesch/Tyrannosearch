@@ -7,81 +7,44 @@ function reloadTotalFound(total) {
 }
 
 
-
 /*
- * Reload Group facet
- *
+ * Reloads and updates the display of the tag and groupID filters
+ * the function is used for both and distinguishes between them
+ * based on the parameter `name`
  */
-function reloadGroupFacet(results) {
-    
-    $("#groups").children().remove();
-    
+function reloadFacet(name, results) {
+
+    var id = "#"+name+"s";
+    var pluralName = name+"s";
     var tpl = $("#facet-tpl").text();
-    
     var html = "";
+
+    var selectedItems = getState()[pluralName];
     
     for(var i=0; i < results.length; i=i+2) {
         var data = {
-            facet: 'group',
-            value: results[i],
-            total: results[i+1],
-        };
-
-        
-        html += Mustache.render(tpl, data);
-    }
-    
-    $("#groups").html(html);
-}
-
-
-/*
- * Reload Role facet
- *
- */
-function reloadRoleFacet(results) {
-    
-    console.log("Role: "+results);
-}
-
-
-
-
-/*
- * Reload Tag facet
- *
- */
-function reloadTagFacet(results) {
-
-    var tpl = $("#facet-tpl").text();
-    
-    var html = "";
-
-    var tags = getState().tags;
-    
-    for(var i=0; i < results.length; i=i+2) {
-        var data = {
-            facet: 'tag',
+            facet: name,
             value: results[i],
             total: results[i+1],
             selected: false
         };
 
-        if (tags.indexOf(data.value) > -1) {
+        if (selectedItems.indexOf(data.value) > -1) {
             data.selected = true;
         }
 
         html += Mustache.render(tpl, data);
     }
     
-    $("#tags").children().remove();
-    $("#tags").html(html);
+    $(id).children().remove();
+    $(id).html(html);
 }
+
+
 
 
 function reloadFacets(data) {
         reloadTotalFound(data.response.numFound);
-        reloadRoleFacet(data.facet_counts.facet_fields.role);
-        reloadGroupFacet(data.facet_counts.facet_fields.groupname);
-        reloadTagFacet(data.facet_counts.facet_fields.tag);
+        reloadFacet("group", data.facet_counts.facet_fields.groupname); 
+        reloadFacet("tag", data.facet_counts.facet_fields.tag); 
 }
