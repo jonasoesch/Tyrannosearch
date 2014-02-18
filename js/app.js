@@ -300,7 +300,7 @@ function getDocument(id) {
  *
  */
 function reloadTotalFound(total) {
-    $("#total").show().html(total);
+    $("#total").html(total);
 }
 
 
@@ -382,6 +382,7 @@ function reloadFacets(data) {
         reloadGroupFacet(data.facet_counts.facet_fields.groupname);
         reloadTagFacet(data.facet_counts.facet_fields.tag);
 }
+
 
 /* **********************************************
      Begin _detailView.js
@@ -530,6 +531,7 @@ function startSearch() {
     $("header").addClass("intro");
     $("aside").hide();
     $("#main").hide();
+    $("#total").hide();
 }
 
 
@@ -542,6 +544,7 @@ function normalSearch() {
     $("header").addClass("normal");
     $("aside").show();
     $("#main").show();
+    $("#total").show();
 }
 
 function prepareInterface() {
@@ -554,6 +557,7 @@ function prepareInterface() {
 		startSearch();
 	}
 }
+
 
 /* **********************************************
      Begin _infiniteScrolling.js

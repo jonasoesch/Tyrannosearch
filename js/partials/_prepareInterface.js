@@ -6,6 +6,7 @@ function startSearch() {
     $("header").addClass("intro");
     $("aside").hide();
     $("#main").hide();
+    $("#total").hide();
 }
 
 
@@ -18,6 +19,7 @@ function normalSearch() {
     $("header").addClass("normal");
     $("aside").show();
     $("#main").show();
+    $("#total").show();
 }
 
 function prepareInterface() {
