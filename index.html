@@ -144,7 +144,7 @@
                     <tr>
                         <td colspan="3">
                             <audio controls>
-                                <source src="{{filename}}" type="audio/{{fileformat}}">
+                                <source src="{{url}}" type="audio/{{fileformat}}">
                                         Your browser does not support the audio element.
                             </audio>
                         </td>
@@ -230,7 +230,12 @@
                         </tr>
                         <tr>
                             <td colspan="3">
-                                <iframe src="{{url}}" />
+                                {{#inline}}
+                                    <iframe src="{{url}}" />
+                                {{/inline}}
+                                {{#download}}
+                                    <a href="{{url}}">Download {{filename}}</a>
+                                {{/download}}
                             </td>
                         </tr>
                     </tbody>

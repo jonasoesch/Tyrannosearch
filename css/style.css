@@ -242,6 +242,9 @@ iframe{
    display: table;
     margin: auto;
     margin-top: 1em;
+    width: 95%;
+    height: 800px;
+    border: none;
 }
 
 form img[data-selected="true"]{

@@ -453,15 +453,18 @@ function displayDetails(result) {
         data.filename = result.filename;
         data.copyright = result.copyright;
         data.creationDate = result.creationDate;
-        
+       
+    
+        // Not all the filenames were indexed with their
+        // file extension. If needed we add it.
        var filename = result.filename;
        if(filename.indexOf(".") < 0){
             filename = filename + "." + data.fileformat;
        }
+       data.filename = $.trim(filename);
         
-        data.url = ["http://comem.trucmu.ch/mrm/medias", result.groupname, result.role, filename].join("/");
+        data.url = ["http://comem.trucmu.ch/mrm/medias", result.groupname, result.role, data.filename].join("/");
         console.log(data);
-
     }
 
     // Sound
@@ -478,6 +481,16 @@ function displayDetails(result) {
     
     //Text
     if(result.role === "text") {
+        
+        // We will display html and pdf files in an iFrame
+        // for all other documents like Word files a download link
+        // should be displayed
+        if( (data.url.indexOf("html") > -1) || (data.url.indexOf("htm") > -1) || (data.url.indexOf("pdf") > -1) ) {
+            data.inline = true;
+        } else {
+            data.download = true;
+        }
+
         tpl = $("#text-tpl").text();
     }
 
@@ -626,11 +639,8 @@ function newResults(results) {
 // @codekit-prepend "_newResults.js"
 
 
-
 window.resultsLoading = true;
 window.nbOfResult = 0;
-
-
 
 
 /*

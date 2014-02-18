@@ -12,11 +12,8 @@
 // @codekit-prepend "_newResults.js"
 
 
-
 window.resultsLoading = true;
 window.nbOfResult = 0;
-
-
 
 
 /*
