@@ -70,8 +70,8 @@ $(document).ready( function() {
     });
     
     // When the user clicks on a detail view, reduce it again
-    $("#main").on("click", "article.details", function() {
-        hideDetails($(this).attr("id"));
+    $("#main").on("click", "article.details h2", function() {
+        hideDetails($(this).parent().attr("id"));
     });
     
     

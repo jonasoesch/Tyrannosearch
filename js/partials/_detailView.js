@@ -12,13 +12,14 @@ function displayDetails(result) {
     
     console.log(article);
     
-    var tpl = "<article id='{{id}}' class='{{role}} details'><h1>{{title}}</h1><p>No template found for this role</p></article>";
+    var tpl = $("#result-tpl").text();
     
     // Default values for a result
     var data = {
       id: result.id,
       role: result.role,
-      title: result.title
+      title: result.title,
+      body: "No template found for this role"
     };
     
     

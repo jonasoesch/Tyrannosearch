@@ -44,13 +44,18 @@
                     <li id="person" data-value="person" data-selected="false"></li>
                 </ul>
             <section id="results">
-                
-
-
 
 
             </section>
         </div>
+
+
+        <script id="result-tpl" type="script/x-mustache-template">
+            <article id='{{id}}' class='{{role}}'>
+                <h2>{{title}}</h2>
+                <p>{{body}}</p>
+            </article>
+        </script>
 
         <script id="person-tpl" type="script/x-mustache-template">
         <article id="{{id}}" class='{{role}} details'> 
@@ -82,6 +87,7 @@
             </table>
         </article>
         </script>
+
 
 
         <script id="city-tpl" type="script/x-mustache-template">

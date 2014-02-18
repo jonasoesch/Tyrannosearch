@@ -113,8 +113,22 @@ input {
 
 
 h2{
+    font-size: 1.2em;
     font-family: 'Lato', sans-serif;
 }
+
+#results h2 {
+    text-indent: 0;
+    padding-right: 40px;
+    padding-left: 15px;
+}
+
+#results p {
+    text-indent: 0;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
 img.mini{
     
     display: block;

@@ -4,7 +4,7 @@
  */
 function displayResults(results) {
 
-    var tpl = "<article id='{{id}}' class='{{role}}'><h1>{{title}}</h1><p>{{body}}</p></article>";
+    var tpl = $("#result-tpl").text();
       
       $(results).each( function(index, result) {
         

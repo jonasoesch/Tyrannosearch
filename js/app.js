@@ -57,7 +57,7 @@ function getState() {
  */
 function displayResults(results) {
 
-    var tpl = "<article id='{{id}}' class='{{role}}'><h1>{{title}}</h1><p>{{body}}</p></article>";
+    var tpl = $("#result-tpl").text();
       
       $(results).each( function(index, result) {
         
@@ -401,13 +401,14 @@ function displayDetails(result) {
     
     console.log(article);
     
-    var tpl = "<article id='{{id}}' class='{{role}} details'><h1>{{title}}</h1><p>No template found for this role</p></article>";
+    var tpl = $("#result-tpl").text();
     
     // Default values for a result
     var data = {
       id: result.id,
       role: result.role,
-      title: result.title
+      title: result.title,
+      body: "No template found for this role"
     };
     
     
@@ -683,8 +684,8 @@ $(document).ready( function() {
     });
     
     // When the user clicks on a detail view, reduce it again
-    $("#main").on("click", "article.details", function() {
-        hideDetails($(this).attr("id"));
+    $("#main").on("click", "article.details h2", function() {
+        hideDetails($(this).parent().attr("id"));
     });
     
     
