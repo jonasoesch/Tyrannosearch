@@ -65,6 +65,7 @@ img.dino{
 header.normal form {
     width: 52%; 
     margin: 5px auto 5px;
+    position: relative;
 }
 
 header.normal form img.dino {
@@ -87,6 +88,13 @@ input {
     border: 1px solid #cdcdcd;
     display: inline-block;
     width: 99%;
+}
+
+#total {
+    position: absolute;
+    top: 13px;
+    right: 15px;
+    color: #777;
 }
 
 #main { 

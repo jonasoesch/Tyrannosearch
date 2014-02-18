@@ -3,7 +3,7 @@
  *
  */
 function reloadTotalFound(total) {
-    console.log("Total found: "+total);
+    $("#total").show().html(total);
 }
 
 
