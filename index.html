@@ -230,12 +230,7 @@
                         </tr>
                         <tr>
                             <td colspan="3">
-                                {{#inline}}
-                                    <iframe src="{{url}}" />
-                                {{/inline}}
-                                {{#download}}
-                                    <a href="{{url}}">Download {{filename}}</a>
-                                {{/download}}
+                                <a href="{{url}}" download="{{filename}}">Download {{filename}}</a>
                             </td>
                         </tr>
                     </tbody>
@@ -250,11 +245,16 @@
             <table>
                 <tbody>
                     <tr>
-                        <td colspan="3">  
+                        <td colspan="3">
+                            {{#isFLV}}
+                                <a href="{{url}}" download="{{filename}}">Download {{filename}}</a>
+                            {{/isFLV}}
+                            {{#notFLV}}
                             <video controls>
                                 <source src="{{url}}" type="video/{{fileformat}}">
                                 Your browser does not support the video tag.
                             </video>
+                            {{/notFLV}}
                         </td>
                     </tr>
                     <tr>

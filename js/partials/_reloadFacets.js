@@ -32,8 +32,16 @@ function reloadFacet(name, results) {
         if (selectedItems.indexOf(data.value) > -1) {
             data.selected = true;
         }
-
-        html += Mustache.render(tpl, data);
+        
+        if(data.total) {
+            html += Mustache.render(tpl, data);
+        }
+    }
+    
+    if(html == '') {
+        $(id).prev("h3").hide();
+    } else {
+        $(id).prev("h3").show();
     }
     
     $(id).children().remove();

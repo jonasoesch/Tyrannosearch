@@ -329,8 +329,16 @@ function reloadFacet(name, results) {
         if (selectedItems.indexOf(data.value) > -1) {
             data.selected = true;
         }
-
-        html += Mustache.render(tpl, data);
+        
+        if(data.total) {
+            html += Mustache.render(tpl, data);
+        }
+    }
+    
+    if(html == '') {
+        $(id).prev("h3").hide();
+    } else {
+        $(id).prev("h3").show();
     }
     
     $(id).children().remove();
@@ -445,15 +453,6 @@ function displayDetails(result) {
     
     //Text
     if(result.role === "text") {
-        
-        // We will display html and pdf files in an iFrame
-        // for all other documents like Word files a download link
-        // should be displayed
-        if( (data.url.indexOf("html") > -1) || (data.url.indexOf("htm") > -1) || (data.url.indexOf("pdf") > -1) ) {
-            data.inline = true;
-        } else {
-            data.download = true;
-        }
 
         tpl = $("#text-tpl").text();
     }
@@ -461,6 +460,15 @@ function displayDetails(result) {
 
 	//Video
     if(result.role === "video") {
+        
+        console.log(result.fileformat);
+        
+        if(result.fileformat == '.flv') {
+            data.isFLV = true;
+        } else {
+            data.notFLV = true;
+        }
+        
         tpl = $("#video-tpl").text();
     }
     var html = Mustache.render(tpl, data);
