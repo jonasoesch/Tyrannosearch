@@ -17,7 +17,7 @@
                 <input autocomplete="off" type="text" name="search">
                 <span id="total" style="display: none">0</span>
             </form>
-            
+
         </header>
 
         <aside>
@@ -33,16 +33,16 @@
                 <li class="group">The naives</li>
             </ul>
         </aside>
-        
+
         <div id="main">
             <ul id="roles">
-                    <li class="role" id="city" data-value="city" data-selected="false"> </li>
-                    <li class="role" id="audio" data-value="audio" data-selected="false"></li>
-                    <li class="role" id="image" data-value="image" data-selected="false"></li>
-                    <li class="role" id="text" data-value="text" data-selected="false"></li>
-                    <li class="role" id="video" data-value="video" data-selected="false"></li>
-                    <li class="role" id="person" data-value="person" data-selected="false"></li>
-                </ul>
+                <li class="role" id="city" data-value="city" data-selected="false"> </li>
+                <li class="role" id="audio" data-value="audio" data-selected="false"></li>
+                <li class="role" id="image" data-value="image" data-selected="false"></li>
+                <li class="role" id="text" data-value="text" data-selected="false"></li>
+                <li class="role" id="video" data-value="video" data-selected="false"></li>
+                <li class="role" id="person" data-value="person" data-selected="false"></li>
+            </ul>
             <section id="results">
 
 
@@ -52,249 +52,257 @@
 
         <script id="result-tpl" type="script/x-mustache-template">
             <article id='{{id}}' class='{{role}}'>
-                <h2>{{title}}</h2>
-                <p>{{body}}</p>
+            <h2>{{title}}</h2>
+            <p>{{body}}</p>
             </article>
         </script>
 
         <script id="person-tpl" type="script/x-mustache-template">
-        <article id="{{id}}" class='{{role}} details'> 
+            <article id="{{id}}" class='{{role}} details'> 
             <h2>{{name}} {{birthdate}}</h2>
-            <p class="small">{{biography}}</p>
+
             <table>
-                <tbody>
-                    <tr>
-                        <td></td>
-                        <td>Foot:</td>
-                        <td>{{size}} cm</td>
-                    </tr>
-                    <tr>
-                        <td>{{address}}</td>
-                        <td>Size:</td>
-                        <td>{{foot}}</td>
-                    </tr>
-                    <tr>
-                        <td>{{cityCode}} {{cityName}}</td>
-                        <td>languages:</td>
-                        <td>{{languages}}</td>
-                    </tr>
-                    <tr>
-                        <td>{{email}}</td>
-                        <td>Hobbies:</td>
-                        <td>{{hobbies}}</td>
-                    </tr>
-                </tbody>
+            <tbody>
+            <tr>
+            <td>{{address}}</td>
+            <td>Size:</td>
+            <td>{{size}} cm</td>
+
+
+
+            </tr>
+            <tr>
+            <td>{{cityCode}} {{cityName}}</td>
+            <td>Foot:</td>
+            <td>{{foot}}</td>
+            </tr>
+            <tr>
+            <td></td>
+            <td>languages:</td>
+            <td>{{languages}}</td>
+            </tr>
+            <tr>
+            <td>{{email}}</td>
+            <td>Hobbies:</td>
+            <td>{{hobbies}}</td>
+            </tr>
+            <tr>
+            </tr>
+            <tr>
+            <td colspan="4" >{{biography}}</td>
+            </tr>
+            </tbody>
             </table>
-        </article>
+            </article>
         </script>
 
 
 
         <script id="city-tpl" type="script/x-mustache-template">
-        <article id='{{id}}' class='{{role}} details'>
-            <h2>{{regionCode}} {{cityName}} ({{regionCode}})</h2>
+            <article id='{{id}}' class='{{role}} details'>
+            <h2> {{cityCode}} {{cityName}} ({{regionCode}})</h2>
             <p class='small'>{{regionName}}</p>
             <iframe 
-                width='425' 
-                height='350' 
-                frameborder='0' 
-                scrolling='no' marginheight='0' marginwidth='0' 
-                src='https://maps.google.ch/maps?q={{regionCode}},{{cityName}}&amp;hnear={{cityName}},{{regionName}}&amp;output=embed'>
+            width='425' 
+            height='350' 
+            frameborder='0' 
+            scrolling='no' marginheight='0' marginwidth='0' 
+            src='https://maps.google.ch/maps?q={{regionCode}},{{cityName}}&amp;hnear={{cityName}},{{regionName}}&amp;output=embed'>
             </iframe><br />
             <small>
-                <a href='https://maps.google.ch/maps?q={{cityName}}&amp;source=embed' style='color:#0000FF;text-align:left;padding:1em;'>View Map on Google Maps</a>
+            <a href='https://maps.google.ch/maps?q={{cityName}}&amp;source=embed' style='color:#0000FF;text-align:left;padding:1em;'>View Map on Google Maps</a>
             </small>
-        </article>
+            </article>
         </script>
 
         <script id="audio-tpl" type="script/x-mustache-template">
-        <article id='{{id}}' class='{{role}} details'>
+            <article id='{{id}}' class='{{role}} details'>
             <h2>{{title}}</h2>
             <p class="small">{{description}}</p>
             <table>
-                <tbody>
-                    <tr>
-                        <td>Language:</td>
-                        <td>Wo chunnt das här??</td>
-                    </tr>
-                    <tr>
-                        <td>Tags:</td>
-                        <td>{{tags}}</td>
-                    </tr>
-                    <tr>
-                        <td>Duration:</td>
-                        <td>{{duration}} s</td>
-                    </tr>
-                    <tr>
-                        <td>Format:</td>
-                        <td>.{{fileformat}}</td>
-                    </tr>
-                    <tr>
-                        <td>{{filesize}} bytes</td>
-                        <td>{{filename}}</td>
-                    </tr>
-                    <tr>
-                        <td>Owner:</td>
-                        <td>{{lastname}}</td>
-                    </tr>
-                    <tr>
-                        <td>Copyright:</td>
-                        <td>{{copyright}}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <audio controls>
-                                <source src="{{url}}" type="audio/{{fileformat}}">
-                                        Your browser does not support the audio element.
-                            </audio>
-                        </td>
-                    </tr>
-                </tbody>
+            <tbody>
+            <tr>
+            <td>Language:</td>
+            <td>Wo chunnt das här??</td>
+            </tr>
+            <tr>
+            <td>Tags:</td>
+            <td>{{tags}}</td>
+            </tr>
+            <tr>
+            <td>Duration:</td>
+            <td>{{duration}} s</td>
+            </tr>
+            <tr>
+            <td>Format:</td>
+            <td>.{{fileformat}}</td>
+            </tr>
+            <tr>
+            <td>{{filesize}} bytes</td>
+            <td>{{filename}}</td>
+            </tr>
+            <tr>
+            <td>Owner:</td>
+            <td>{{lastname}}</td>
+            </tr>
+            <tr>
+            <td>Copyright:</td>
+            <td>{{copyright}}</td>
+            </tr>
+            <tr>
+            <td colspan="3">
+            <audio controls>
+            <source src="{{url}}" type="audio/{{fileformat}}">
+            Your browser does not support the audio element.
+            </audio>
+            </td>
+            </tr>
+            </tbody>
             </table>
-        </article>
+            </article>
         </script>
-        
-        
-        
-		<script id="image-tpl" type="script/x-mustache-template">
-        <article id='{{id}}' class='{{role}} details'>
+
+
+
+        <script id="image-tpl" type="script/x-mustache-template">
+            <article id='{{id}}' class='{{role}} details'>
             <h2>{{title}}</h2>
             <p class="small">{{description}}</p>
             <table>
-                <tbody>
-                    <tr>
-                        <td>Creation:</td>
-                        <td>{{creationDate}}</td>
-                    </tr>
-                    <tr>
-                        <td>Tags:</td>
-                        <td colspan="2">{{tags}}</td>
-                    </tr>
-                    <tr>
-                        <td>Type:</td>
-                        <td>????</td>
-                    </tr>
-                    <tr>
-                        <td>Format:</td>
-                        <td>{{fileformat}}</td>
-                    </tr>
-                    <tr>
-                        <td>{{filesize}} bytes</td>
-                        <td>{{filename}}</td>
-                    </tr>
-                    <tr>
-                        <td>Colors :</td>
-                        <td>{{colors}}</td>
-                    </tr>
-                    <tr>
-                        <td colspan='3'>
-                            <img src='{{url}}' class='search' />
-                        </td>
-                    </tr>
-                </tbody>
+            <tbody>
+            <tr>
+            <td>Creation:</td>
+            <td>{{creationDate}}</td>
+            </tr>
+            <tr>
+            <td>Tags:</td>
+            <td colspan="2">{{tags}}</td>
+            </tr>
+            <tr>
+            <td>Type:</td>
+            <td>????</td>
+            </tr>
+            <tr>
+            <td>Format:</td>
+            <td>{{fileformat}}</td>
+            </tr>
+            <tr>
+            <td>{{filesize}} bytes</td>
+            <td>{{filename}}</td>
+            </tr>
+            <tr>
+            <td>Colors :</td>
+            <td>{{colors}}</td>
+            </tr>
+            <tr>
+            <td colspan='3'>
+            <img src='{{url}}' class='search' />
+            </td>
+            </tr>
+            </tbody>
             </table>
-        </article>
+            </article>
         </script>
-        
-        
-                
-		<script id="text-tpl" type="script/x-mustache-template">
-        	<article id='{{id}}' class='{{role}} details'>
-                <h2>{{title}}</h2>
-                <p class="small">{{description}}</p>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td class="bold">Language:</td>
-                            <td>{{languages}}<td>       
-                        </tr>
-                        <tr>
-                            <td class="bold">Tags:</td> 
-                            <td>{{tags}}</td> 
-                        </tr>
-                        <tr>
-                            <td class="bold">Creation date</td>
-                            <td>{{creationDate}}</td>
-                        </tr>
-                        <tr>
-                            <td class="bold">Modification date</td>
-                            <td>{{modificationDate}}</td>
-                        </tr>
-                        <tr>
-                            <td class="bold">Format:</td>
-                            <td>{{fileformat}}</td>
-                        </tr>
-                        <tr>
-                            <td>{{filesize}}</td>
-                            <td>{{filename}}</td> 
-                        </tr>
-                        <tr>
-                            <td colspan="3">
-                                <a href="{{url}}" download="{{filename}}">Download {{filename}}</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </script>
-            
-            
-		<script id="video-tpl" type="script/x-mustache-template">
-        	<article id='{{id}}' class='{{role}} details'>
+
+
+
+        <script id="text-tpl" type="script/x-mustache-template">
+            <article id='{{id}}' class='{{role}} details'>
             <h2>{{title}}</h2>
             <p class="small">{{description}}</p>
             <table>
-                <tbody>
-                    <tr>
-                        <td colspan="3">
-                            {{#isFLV}}
-                                <a href="{{url}}" download="{{filename}}">Download {{filename}}</a>
-                            {{/isFLV}}
-                            {{#notFLV}}
-                            <video controls>
-                                <source src="{{url}}" type="video/{{fileformat}}">
-                                Your browser does not support the video tag.
-                            </video>
-                            {{/notFLV}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="bold">Language:</td>
-                        <td>{{language}}</td>
-                    </tr>
-                    <tr>
-                        <td class="bold">Tags:</td>
-                        <td>{{tags}}</td>
-                    </tr>
-                    <tr>
-                        <td class="bold">Duration:</td>
-                        <td>{{duration}} s</td>
-                    </tr>
-                    <tr>
-                        <td class="bold">Theme:</td>
-                        <td>{{theme}}</td>
-                    </tr>
-                    <tr>
-                        <td class="bold">Format:</td>
-                        <td>.{{fileformat}}</td>
-                    </tr>
-                    <tr>
-                        <td>{{filesize}} bytes</td>
-                        <td>{{filename}}</td>
-                    </tr>
-                    <tr>
-                        <td class="bold">Owner:</td>
-                        <td>{{owner}}</td>
-                    </tr>
-                    <tr>
-                        <td class="bold">Copyright:</td>
-                        <td>Vine</td> 
-                    </tr>
-                </tbody>
+            <tbody>
+            <tr>
+            <td class="bold">Language:</td>
+            <td>{{languages}}<td>       
+            </tr>
+            <tr>
+            <td class="bold">Tags:</td> 
+            <td>{{tags}}</td> 
+            </tr>
+            <tr>
+            <td class="bold">Creation date</td>
+            <td>{{creationDate}}</td>
+            </tr>
+            <tr>
+            <td class="bold">Modification date</td>
+            <td>{{modificationDate}}</td>
+            </tr>
+            <tr>
+            <td class="bold">Format:</td>
+            <td>{{fileformat}}</td>
+            </tr>
+            <tr>
+            <td>{{filesize}}</td>
+            <td>{{filename}}</td> 
+            </tr>
+            <tr>
+            <td colspan="3">
+            <a href="{{url}}" download="{{filename}}">Download {{filename}}</a>
+            </td>
+            </tr>
+            </tbody>
             </table>
-        </article>
         </script>
-        
-        
+
+
+        <script id="video-tpl" type="script/x-mustache-template">
+            <article id='{{id}}' class='{{role}} details'>
+            <h2>{{title}}</h2>
+            <p class="small">{{description}}</p>
+            <table>
+            <tbody>
+            <tr>
+            <td colspan="3">
+            {{#isFLV}}
+            <a href="{{url}}" download="{{filename}}">Download {{filename}}</a>
+            {{/isFLV}}
+            {{#notFLV}}
+            <video controls>
+            <source src="{{url}}" type="video/{{fileformat}}">
+            Your browser does not support the video tag.
+            </video>
+            {{/notFLV}}
+            </td>
+            </tr>
+            <tr>
+            <td class="bold">Language:</td>
+            <td>{{language}}</td>
+            </tr>
+            <tr>
+            <td class="bold">Tags:</td>
+            <td>{{tags}}</td>
+            </tr>
+            <tr>
+            <td class="bold">Duration:</td>
+            <td>{{duration}} s</td>
+            </tr>
+            <tr>
+            <td class="bold">Theme:</td>
+            <td>{{theme}}</td>
+            </tr>
+            <tr>
+            <td class="bold">Format:</td>
+            <td>.{{fileformat}}</td>
+            </tr>
+            <tr>
+            <td>{{filesize}} bytes</td>
+            <td>{{filename}}</td>
+            </tr>
+            <tr>
+            <td class="bold">Owner:</td>
+            <td>{{owner}}</td>
+            </tr>
+            <tr>
+            <td class="bold">Copyright:</td>
+            <td>Vine</td> 
+            </tr>
+            </tbody>
+            </table>
+            </article>
+        </script>
+
+
         <script id="facet-tpl" type="script/x-mustache-template">
             <li data-value="{{value}}" class="{{facet}}" data-selected="{{selected}}">{{value}} ({{total}})</li>
         </script>
